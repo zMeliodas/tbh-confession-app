@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap");
+@import "tailwindcss";
+
+
+@theme {
+    --color-dark: #1b1816;
+    --color-textColorNav: #696766;
+    --color-hoverColorNav: #312823;
+    --color-pink: #726d66;
+    --color-pinkHover: #54504b;
+    --color-offWhite: #F2F0EF;
+    --color-borderOutline: #272322;
+    --color-secondaryColorGray: #84848C;
+    --color-textFieldGray: #1B1B1D;
+    --color-cardBg: #0b0908;
+    --color-customBrown: #312823;
+    --color-customBrown2: #262422;
+    --font-mulish: "Mulish", sans-serif;
+}
+

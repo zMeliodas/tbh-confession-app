@@ -1,0 +1,23 @@
+import React from "react";
+import { useState } from 'react';
+
+const InputField = ({ placeholderText, label, inputType, required = false }) => {
+  const [hasValue, setHasValue] = useState(false);
+
+  return (
+    <>
+      <label className="text-md text-offWhite font-mulish font-bold mt-8">
+        {label}
+        {required && !hasValue && <span className="text-red-500">*</span>}
+      </label>
+      <input
+        type={inputType}
+        placeholder={placeholderText}
+        onChange={(e) => setHasValue(e.target.value.length > 0)}
+        className=" text-sm text-offWhite placeholder:text-secondaryColorGray font-mulish font-light border border-borderOutline rounded-md p-2 mt-0.5 h-10 w-108"
+      />
+    </>
+  );
+};
+
+export default InputField;
