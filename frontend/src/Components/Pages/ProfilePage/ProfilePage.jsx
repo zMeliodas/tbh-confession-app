@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { IoLinkSharp } from "react-icons/io5";
 import CustomTabButton from "src/Components/common/CustomTabButton";
+import CustomReceivedMessageCard from "../../common/CustomReceivedMessageCard";
+
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("received");
 
@@ -17,7 +19,7 @@ const ProfilePage = () => {
 
   return (
     <div className="h-screen bg-dark text-offWhite flex flex-col items-center pt-24">
-      <div className="bg-cardBg flex flex-col px-48 py-4 justify-start content-start border rounded-xl border-borderOutline">
+      <div className="bg-cardBg flex flex-col px-48 py-4 w-5xl justify-center items-center content-center border rounded-xl border-borderOutline">
         <div className="flex flex-col items-center space-y-4">
           {user.image ? (
             <img
@@ -26,20 +28,24 @@ const ProfilePage = () => {
               className="w-24 h-24 rounded-full object-cover"
             />
           ) : (
-            <div className="w-24 h-24 rounded-full bg-customBrown flex items-center justify-center text-2xl font-semibold text-white">
+            <div className="w-24 h-24 rounded-full bg-pink flex items-center justify-center text-2xl font-semibold text-offWhite">
               {getInitials(user.username)}
             </div>
           )}
 
-          <h2 className="text-xl font-semibold">@{user.username}</h2>
+          <h2 className="text-xl text-offWhite font-mulish font-semibold">
+            @{user.username}
+          </h2>
 
-          <div className="bg-customBrown2 px-4 py-2 rounded-lg flex items-center gap-1 cursor-pointer hover:bg-customBrown transition-colors duration-200">
+          <div className="bg-customHoverGray px-4 py-2 rounded-lg flex items-center gap-1 cursor-pointer select-none hover:bg-pinkHover transition-colors duration-200">
             <IoLinkSharp className="pt-1 w-5 h-5" />
-            <span className="text-sm">www.tbh.link/to/cedlemuel</span>
+            <span className="text-offWhite text-sm font-mulish">
+              www.tbh.link/to/cedlemuel
+            </span>
           </div>
         </div>
 
-        <div className="flex mt-10 border-b border-borderOutline w-full max-w-md">
+        <div className="flex mt-8 mb-4 border-b border-borderOutline">
           <CustomTabButton
             text="Received"
             isActive={activeTab === "received"}
@@ -51,8 +57,12 @@ const ProfilePage = () => {
             onClick={() => setActiveTab("sent")}
           />
         </div>
+        
+        <div className="w-full">
+          <CustomReceivedMessageCard />
+        </div>
 
-        <div className="mt-6 w-full max-w-md text-center">
+        <div className="mt-6 text-offWhite text-center">
           {activeTab === "received" ? (
             <p className="text-textColorNav font-mulish">
               No received messages yet.

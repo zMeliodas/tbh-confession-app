@@ -6,24 +6,18 @@ import { CgNotes } from "react-icons/cg";
 import { TiMessages } from "react-icons/ti";
 import { FiLogIn } from "react-icons/fi";
 import moon from "src/assets/moon.svg";
-import ShareLinkModal from "../Modals/ShareLinkModal";
+import logo from "src/assets/logo.svg";
 
-const Navbar = () => {
+const Navbar = ({ onShareLinkClick }) => {
   return (
     <>
-      <nav className="bg-dark flex justify-around items-center w-screen py-1 fixed top:0 left:0 h-22">
+      <nav className="bg-dark flex justify-around items-center w-screen py-1 fixed h-22">
         <Link to={"/"}>
-          <span className="font-semibold text-lg flex items-center text-offWhite">
-            tbh.link
-          </span>
+          <img src={logo} alt="logo" className="w-16 h-16 cursor-pointer" />
         </Link>
 
         <div className="flex gap-3 items-center">
-          <NavButton
-            onClick={() => {
-              document.getElementById("share_link_modal").showModal();
-            }}
-          >
+          <NavButton onClick={onShareLinkClick}>
             <IoIosLink className="w-8 h-8" />
           </NavButton>
 
@@ -48,7 +42,6 @@ const Navbar = () => {
 
         <img src={moon} alt="theme icon" className="w-8 h-8 cursor-pointer" />
       </nav>
-      <ShareLinkModal />
     </>
   );
 };
