@@ -7,7 +7,7 @@ const CustomReceivedMessageCard = () => {
   return (
     <div className="bg-pinkHover flex flex-col p-4 pb-1 border rounded-lg border-borderOutline">
       <div className="flex justify-center font-black text-xl">
-        <span className="text-offWhite font-mulish font-black">
+        <span className="text-offWhite font-mulish font-black select-none">
           From an unknown sender
         </span>
       </div>

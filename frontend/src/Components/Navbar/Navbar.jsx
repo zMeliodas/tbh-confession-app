@@ -7,6 +7,7 @@ import { TiMessages } from "react-icons/ti";
 import { FiLogIn } from "react-icons/fi";
 import moon from "src/assets/moon.svg";
 import logo from "src/assets/logo.svg";
+import { TbMessage2Heart } from "react-icons/tb";
 
 const Navbar = ({ onShareLinkClick }) => {
   return (
@@ -27,7 +28,13 @@ const Navbar = ({ onShareLinkClick }) => {
             </NavButton>
           </Link>
 
-          <Link to={"/shareLink"}>
+          <Link to={"/confess"}>
+            <NavButton>
+              <TbMessage2Heart className="w-8 h-8" />
+            </NavButton>
+          </Link>
+
+          <Link to={"/whisper"}>
             <NavButton>
               <TiMessages className="w-8 h-8" />
             </NavButton>

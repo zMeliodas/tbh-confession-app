@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IoLinkSharp } from "react-icons/io5";
 import CustomTabButton from "src/Components/common/CustomTabButton";
-import CustomReceivedMessageCard from "../../common/CustomReceivedMessageCard";
+import CustomReceivedMessageCard from "src/Components/common/CustomReceivedMessageCard";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("received");
@@ -18,17 +18,17 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="h-screen bg-dark text-offWhite flex flex-col items-center pt-24">
-      <div className="bg-cardBg flex flex-col px-48 py-4 w-5xl justify-center items-center content-center border rounded-xl border-borderOutline">
+    <div className="h-screen bg-dark text-offWhite flex flex-col items-center pt-24 overflow-y-auto">
+      <div className="bg-cardBg flex flex-col px-48 py-4 mb-8 w-5xl justify-center items-center content-center border rounded-xl border-borderOutline">
         <div className="flex flex-col items-center space-y-4">
           {user.image ? (
             <img
               src={user.image}
               alt="Profile"
-              className="w-24 h-24 rounded-full object-cover"
+              className="w-24 h-24 rounded-full object-cover select-none"
             />
           ) : (
-            <div className="w-24 h-24 rounded-full bg-pink flex items-center justify-center text-2xl font-semibold text-offWhite">
+            <div className="w-24 h-24 rounded-full bg-pink flex items-center justify-center text-2xl select-none font-semibold text-offWhite">
               {getInitials(user.username)}
             </div>
           )}
@@ -57,7 +57,7 @@ const ProfilePage = () => {
             onClick={() => setActiveTab("sent")}
           />
         </div>
-        
+
         <div className="w-full">
           <CustomReceivedMessageCard />
         </div>
