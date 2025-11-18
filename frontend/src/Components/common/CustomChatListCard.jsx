@@ -1,16 +1,8 @@
 import React from "react";
+import { getUserInfo } from "src/providers/UserProvider.jsx";
 
-const CustomChatListCard = ({username, content}) => {
-  const user = {
-    username: "cedlemuel",
-    image: "",
-    link: "www.tbh.link/to/cedlemuel",
-  };
-
-  const getInitials = (name) => {
-    if (!name) return "";
-    return name.trim().charAt(0).toUpperCase();
-  };
+const CustomChatListCard = ({ username, content }) => {
+  const { user, getInitials } = getUserInfo();
 
   return (
     <div className="flex justify-start rounded-lg border-borderOutline gap-2 px-2 py-2 w-full cursor-pointer hover:bg-secondaryColorGray/40">

@@ -1,18 +1,11 @@
 import React, { useState } from "react";
 import { IoPaperPlaneOutline } from "react-icons/io5";
+import { getUserInfo } from "src/providers/UserProvider.jsx";
 
 const CustomChatSection = () => {
   const [message, setMessage] = useState("");
-  const user = {
-    username: "cedlemuel",
-    image: "",
-    link: "www.tbh.link/to/cedlemuel",
-  };
 
-  const getInitials = (name) => {
-    if (!name) return "";
-    return name.trim().charAt(0).toUpperCase();
-  };
+  const {user, getInitials} = getUserInfo();
 
   return (
     <>

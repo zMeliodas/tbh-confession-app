@@ -2,20 +2,12 @@ import { useState } from "react";
 import { IoLinkSharp } from "react-icons/io5";
 import CustomTabButton from "src/Components/common/CustomTabButton";
 import CustomReceivedMessageCard from "src/Components/common/CustomReceivedMessageCard";
+import { getUserInfo } from "../../../providers/UserProvider";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("received");
 
-  const user = {
-    username: "cedlemuel",
-    image: "",
-    link: "www.tbh.link/to/cedlemuel",
-  };
-
-  const getInitials = (name) => {
-    if (!name) return "";
-    return name.trim().charAt(0).toUpperCase();
-  };
+  const {user, getInitials} = getUserInfo();
 
   return (
     <div className="h-screen bg-dark text-offWhite flex flex-col items-center pt-24 overflow-y-auto">
