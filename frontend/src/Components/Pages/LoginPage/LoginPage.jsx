@@ -1,17 +1,17 @@
 import React from "react";
 import InputField from "../../common/InputField";
-import CustomButtonPink from "../../common/CustomButtonPink";
+import CustomButtonPurple from "../../common/CustomButtonPurple";
 import CustomButtonGray from "../../common/CustomButtonGray";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   return (
-    <main className="bg-dark flex flex-col items-center h-screen pt-24">
-      <div className="bg-cardBg flex flex-col p-4 justify-start content-start border rounded-xl border-borderOutline">
-        <h1 className="text-3xl text-offWhite font-mulish font-bold">
+    <main className="bg-backgroundColor flex flex-col items-center h-screen pt-24">
+      <div className="bg-cardBg flex flex-col p-4 justify-start content-start border rounded-xl border-borderColor">
+        <h1 className="text-3xl text-primaryTextColor font-mulish font-bold">
           TBH Account
         </h1>
-        <h2 className="text-md text-secondaryColorGray font-mulish font-light">
+        <h2 className="text-md text-secondaryTextColor font-mulish font-light">
           Proceed with your TBH Account
         </h2>
 
@@ -19,7 +19,7 @@ const LoginPage = () => {
         <InputField label="Password" inputType="password" />
 
         <div className="mt-4">
-          <CustomButtonPink padding="p-1" text="Login" width="w-108" />
+          <CustomButtonPurple padding="p-1" text="Login" width="w-108" />
         </div>
 
         <div className="mt-2">
@@ -30,11 +30,11 @@ const LoginPage = () => {
           />
         </div>
 
-        <span className="text-md font-light font-mulish text-offWhite text-center mt-4 whitespace-nowrap">
+        <span className="text-md font-light font-mulish text-primaryTextColor text-center mt-4 whitespace-nowrap">
           Don't have an account?{" "}
           <Link
             to={"/register"}
-            className="text-md font-light font-mulish text-offWhite underline"
+            className="text-md font-light font-mulish text-primaryTextColor hover:underline"
           >
             Sign Up
           </Link>

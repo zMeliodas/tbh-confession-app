@@ -10,8 +10,8 @@ const ProfilePage = () => {
   const {user, getInitials} = getUserInfo();
 
   return (
-    <div className="h-screen bg-dark text-offWhite flex flex-col items-center pt-24 overflow-y-auto">
-      <div className="bg-cardBg flex flex-col px-48 py-4 mb-8 w-5xl justify-center items-center content-center border rounded-xl border-borderOutline">
+    <div className="h-screen bg-backgroundColor text-primaryTextColor flex flex-col items-center pt-24 overflow-y-auto">
+      <div className="bg-cardBg flex flex-col px-48 py-4 mb-8 w-5xl justify-center items-center content-center border rounded-xl border-borderColor">
         <div className="flex flex-col items-center space-y-4">
           {user.image ? (
             <img
@@ -20,24 +20,24 @@ const ProfilePage = () => {
               className="w-24 h-24 rounded-full object-cover select-none"
             />
           ) : (
-            <div className="w-24 h-24 rounded-full bg-pink flex items-center justify-center text-2xl select-none font-semibold text-offWhite">
+            <div className="w-24 h-24 rounded-full bg-purple text-primaryTextColor flex items-center justify-center text-2xl select-none font-semibold">
               {getInitials(user.username)}
             </div>
           )}
 
-          <h2 className="text-xl text-offWhite font-mulish font-semibold">
+          <h2 className="text-xl text-primaryTextColor font-mulish font-semibold">
             @{user.username}
           </h2>
 
-          <div className="bg-customHoverGray px-4 py-2 rounded-lg flex items-center gap-1 cursor-pointer select-none hover:bg-pinkHover transition-colors duration-200">
+          <div className="bg-linkContainer px-4 py-2 rounded-lg flex items-center gap-1 cursor-pointer select-none hover:bg-purpleHover transition-colors duration-200">
             <IoLinkSharp className="pt-1 w-5 h-5" />
-            <span className="text-offWhite text-sm font-mulish">
+            <span className="text-primaryTextColor text-sm font-mulish">
               www.tbh.link/to/cedlemuel
             </span>
           </div>
         </div>
 
-        <div className="flex mt-8 mb-4 border-b border-borderOutline">
+        <div className="flex mt-8 mb-4 border-b border-borderColor">
           <CustomTabButton
             text="Received"
             isActive={activeTab === "received"}
@@ -56,11 +56,11 @@ const ProfilePage = () => {
 
         <div className="mt-6 text-offWhite text-center">
           {activeTab === "received" ? (
-            <p className="text-textColorNav font-mulish">
+            <p className="text-primaryTextColor font-mulish">
               No received messages yet.
             </p>
           ) : (
-            <p className="text-textColorNav font-mulish">
+            <p className="text-primaryTextColor font-mulish">
               No sent messages yet.
             </p>
           )}

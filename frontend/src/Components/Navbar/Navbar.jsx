@@ -5,15 +5,13 @@ import { IoIosLink } from "react-icons/io";
 import { CgNotes } from "react-icons/cg";
 import { TiMessages } from "react-icons/ti";
 import { FiLogIn } from "react-icons/fi";
-import moon from "src/assets/moon.svg";
 import logo from "src/assets/logo.svg";
 import { TbMessage2Heart } from "react-icons/tb";
-
-
+import { ThemeToggle } from "./ThemeToggle";
 
 const Navbar = ({ onShareLinkClick }) => {
   return (
-    <nav className="bg-dark flex justify-around items-center w-screen py-1 fixed h-22">
+    <nav className="bg-backgroundColor flex justify-around items-center w-screen py-1 fixed h-22">
       <Link to={"/"}>
         <img src={logo} alt="logo" className="w-16 h-16 cursor-pointer" />
       </Link>
@@ -48,7 +46,7 @@ const Navbar = ({ onShareLinkClick }) => {
         </Link>
       </div>
 
-      <img src={moon} alt="theme icon" className="w-8 h-8 cursor-pointer" />
+      <ThemeToggle />
     </nav>
   );
 };

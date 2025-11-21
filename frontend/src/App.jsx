@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { createContext, useState } from "react";
+import { useState } from "react";
 import Navbar from "src/Components/Navbar/Navbar";
 import LandingPage from "src/Components/Pages/LandingPage/LandingPage";
 import LoginPage from "src/Components/Pages/LoginPage/LoginPage";

@@ -1,20 +1,44 @@
 @import url("https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap");
 @import "tailwindcss";
 
-
 @theme {
-    --color-dark: #111113;
-    --color-navIconColor: #9f9fa9;
-    --color-hoverColorNav: #27272a;
-    --color-pink: #776fbf;
-    --color-pinkHover: #56508c;
-    --color-offWhite: #F2F0EF;
-    --color-borderOutline: #27272a;
-    --color-secondaryColorGray: #84848C;
-    --color-textFieldGray: #27272a;
-    --color-cardBg: #18181b;
-    --color-customGray: #1b1b1d;
-    --color-customHoverGray: #222224;
-    --font-mulish: "Mulish", sans-serif;
+  --color-backgroundColor: #f2f0ef;
+  --color-primaryTextColor: #27272a;
+  --color-purple: #776fbf;
+  --color-purpleHover: #56508c;
+  --color-navIconColor: #27272a;
+  --color-hoverColorNav: #e6e3e1;
+  --color-cardBg: #e8e6e4;
+  --color-borderColor: #d9d6d4;
+  --color-textFieldBg: #f7f6f5;
+  --color-secondaryTextColor: #84848c;
+  --color-customGray: #1b1b1d;
+  --color-customHoverGray: #222224;
+  --color-linkContainer: #d9d6d4;
+  --color-offWhite: #f2f0ef;
+  --color-promptContainer: #b4b3b1;
+  --font-mulish: "Mulish", sans-serif;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer theme {
+  .dark {
+    --color-backgroundColor: #111113;
+    --color-primaryTextColor: #f2f0ef;
+    --color-secondaryTextColor: #84848c;
+    --color-purple: #776fbf;
+    --color-purpleHover: #56508c;
+    --color-navIconColor: #9f9fa9;
+    --color-hoverColorNav: #27272a;
+    --color-cardBg: #18181b;
+    --color-borderColor: #3a3a3d;
+    --color-textFieldBg: #3a3a3d;
+    --color-customGray: #2e2e30;
+    --color-customHoverGray: #3a3a3c;
+    --color-linkContainer: #3a3a3c;
+    --color-offWhite: #f2f0ef;
+    --color-promptContainer: #27272a;
+    --font-mulish: "Mulish", sans-serif;
+  }
+}

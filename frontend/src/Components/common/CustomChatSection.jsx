@@ -9,8 +9,8 @@ const CustomChatSection = () => {
 
   return (
     <>
-      <div className="bg-cardBg border border-borderOutline rounded-lg flex flex-col gap-2 shadow-2xl">
-        <div className="flex justify-start border-b border-borderOutline gap-2 px-4 py-4 w-full">
+      <div className="bg-cardBg border border-borderColor rounded-lg flex flex-col gap-2 shadow-2xl">
+        <div className="flex justify-start border-b border-borderColor gap-2 px-4 py-4 w-full">
           {user.image ? (
             <img
               src={user.image}
@@ -18,11 +18,11 @@ const CustomChatSection = () => {
               className="w-8 h-8 rounded-full object-cover select-none"
             />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-pink flex items-center justify-center text-lg select-none font-semibold text-offWhite">
+            <div className="w-8 h-8 rounded-full bg-purple flex items-center justify-center text-lg select-none font-semibold text-primaryTextColor">
               {getInitials(user.username)}
             </div>
           )}
-          <span className="text-offWhite font-mulish font-bold pt-0.5">cedlemuel</span>
+          <span className="text-primaryTextColor font-mulish font-bold pt-0.5">cedlemuel</span>
         </div>
 
         <div className="flex h-full gap-10 p-2">
@@ -38,9 +38,9 @@ const CustomChatSection = () => {
               placeholder="Type your message..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="flex-1 bg-borderOutline text-offWhite font-mulish placeholder-secondaryColorGray rounded-lg px-4 py-3 border border-borderOutline outline-gray w-6xl"
+              className="flex-1 bg-textFieldBg text-primaryTextColor font-mulish placeholder-secondaryTextColor rounded-lg px-4 py-3 border border-borderColor outline-gray w-6xl"
             />
-            <button className="bg-pink hover:bg-pinkHover cursor-pointer text-white rounded-lg px-4 py-3 flex items-center justify-center transition-colors">
+            <button className="bg-purple hover:bg-purpleHover cursor-pointer text-white rounded-lg px-4 py-3 flex items-center justify-center transition-colors">
               <IoPaperPlaneOutline className="w-5 h-5" />
             </button>
           </div>

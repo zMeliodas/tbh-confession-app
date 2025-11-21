@@ -3,7 +3,7 @@ import logo from "src/assets/logo.svg";
 
 const CustomSentMessageCard = () => {
   return (
-    <div className="bg-pinkHover flex flex-col p-4 border rounded-lg border-borderOutline">
+    <div className="bg-purpleHover flex flex-col p-4 border rounded-lg border-borderOutline">
       <div className="flex">
         <span className="flex-1 font-mulish font-semibold">to: @cedlemuel</span>
       </div>

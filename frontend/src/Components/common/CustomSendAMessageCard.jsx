@@ -18,8 +18,8 @@ const CustomSendAMessageCard = () => {
   };
 
   return (
-    <div className="bg-cardBg rounded-2xl w-2xl border border-borderOutline overflow-hidden">
-      <div className="bg-pink border-b border-borderOutline px-6 py-4 flex items-center justify-between">
+    <div className="bg-cardBg rounded-2xl w-2xl border border-borderColor overflow-hidden">
+      <div className="bg-purple border-b border-borderColor px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2 text-offWhite">
           <span className="text-sm font-mulish select-none">To:</span>
           <span className="text-offWhite font-mulish font-bold">
@@ -32,7 +32,7 @@ const CustomSendAMessageCard = () => {
       </div>
 
       <div className="px-6 py-6">
-        <div className="flex items-center gap-3 bg-textFieldGray rounded-lg px-4 py-3">
+        <div className="flex items-center gap-3 bg-promptContainer rounded-lg px-4 py-3">
           <div className="w-8 h-8 bg-textFieldGray rounded-lg flex items-center justify-center">
             {user.image ? (
               <img
@@ -41,12 +41,12 @@ const CustomSendAMessageCard = () => {
                 className="w-8 h-8 rounded-full object-cover select-none"
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-pink flex items-center justify-center text-lg font-semibold select-none text-offWhite">
+              <div className="w-8 h-8 rounded-full bg-purple flex items-center justify-center text-lg font-semibold select-none text-offWhite">
                 {getInitials(user.username)}
               </div>
             )}
           </div>
-          <span className="text-white font-mulish select-none">
+          <span className="text-primaryTextColor font-medium font-mulish select-none">
             Send me an anonymous confession!
           </span>
         </div>
@@ -73,9 +73,9 @@ const CustomSendAMessageCard = () => {
             placeholder="Type your message..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="flex-1 bg-borderOutline text-offWhite font-mulish placeholder-secondaryColorGray rounded-lg px-4 py-3 border border-borderOutline outline-gray"
+            className="flex-1 bg-borderOutline text-primaryTextColor font-mulish placeholder-secondaryTextColor rounded-lg px-4 py-3 border border-borderColor outline-gray"
           />
-          <button className="bg-pink hover:bg-pinkHover cursor-pointer text-white rounded-lg px-4 py-3 flex items-center justify-center transition-colors">
+          <button className="bg-purple hover:bg-purpleHover cursor-pointer text-offWhite rounded-lg px-4 py-3 flex items-center justify-center transition-colors">
             <IoPaperPlaneOutline className="w-5 h-5" />
           </button>
         </div>
