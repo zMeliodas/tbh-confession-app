@@ -18,7 +18,7 @@ const CustomSendAMessageCard = () => {
   };
 
   return (
-    <div className="bg-cardBg rounded-2xl w-2xl border border-borderColor overflow-hidden">
+    <div className="bg-cardBg rounded-2xl w-full sm:w-2xl mx-4 border border-borderColor overflow-hidden">
       <div className="bg-purple border-b border-borderColor px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2 text-offWhite">
           <span className="text-sm font-mulish select-none">To:</span>
@@ -52,28 +52,21 @@ const CustomSendAMessageCard = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-end pt-0 p-6 gap-0.5">
+      <div className="flex flex-col items-end pt-2 p-6 gap-0.5 h-56 overflow-y-auto custom-scroll">
         <CustomChatBubble content="Hi nigga" />
-        <CustomChatBubble
-          content="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloribus
-            distinctio et, eveniet ratione quo ab, reprehenderit aliquid
-            adipisci non officiis, exercitationem nobis. Vel quibusdam aperiam
-            repudiandae ad dicta mollitia maxime.
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloribus
-            distinctio et, eveniet ratione quo ab, reprehenderit aliquid
-            adipisci non officiis, exercitationem nobis. Vel quibusdam aperiam
-            repudiandae ad dicta mollitia maxime."
-        />
+        <CustomChatBubble content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non quis facilis error labore ipsum assumenda officia, temporibus natus exercitationem voluptatum. Tempora itaque ea mollitia, magni placeat incidunt dolor nesciunt saepe." />
+        <CustomChatBubble content="Ano gawa mo kupal?" />
+        <CustomChatBubble content="shabu pa nigga" />
       </div>
 
-      <div className="px-6 pb-6">
+      <div className="px-6 pb-6 pt-6">
         <div className="flex gap-3">
           <input
             type="text"
             placeholder="Type your message..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="flex-1 bg-borderOutline text-primaryTextColor font-mulish placeholder-secondaryTextColor rounded-lg px-4 py-3 border border-borderColor outline-gray"
+            className="w-full sm:flex-1 bg-textFieldBg text-primaryTextColor font-mulish placeholder-secondaryTextColor rounded-lg px-4 py-3 border border-borderColor outline-gray"
           />
           <button className="bg-purple hover:bg-purpleHover cursor-pointer text-offWhite rounded-lg px-4 py-3 flex items-center justify-center transition-colors">
             <IoPaperPlaneOutline className="w-5 h-5" />

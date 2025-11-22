@@ -5,11 +5,11 @@ import { FiGithub } from "react-icons/fi";
 
 const LandingPage = () => {
   return (
-    <main className="bg-backgroundColor h-screen flex flex-col items-center justify-center pt-24">
-      <h1 className="text-primaryTextColor text-center text-8xl w-full font-mulish font-extrabold tracking-tighter">
+    <main className="bg-backgroundColor h-screen flex flex-col items-center justify-center pt-24 overflow-auto">
+      <h1 className="text-primaryTextColor text-center text-4xl sm:text-6xl md:text-7xl lg:text-8xl w-full font-mulish font-extrabold tracking-tighter">
         Where Secrets Find a Voice
       </h1>
-      <p className="text-secondaryTextColor text-center text-xl font-mulish font-medium pt-4">
+      <p className="text-secondaryTextColor text-center text-sm md:text-xl font-mulish font-medium pt-4">
         A simple platform to express yourself anonymously with encrypted
         messages.
       </p>
@@ -19,7 +19,8 @@ const LandingPage = () => {
             padding="p-2"
             paddingTop="pt-3"
             text="Get Started"
-            width="w-38"
+            textSize="text-sm md:text-lg"
+            width="md:w-38"
           />
         </Link>
 
@@ -30,9 +31,10 @@ const LandingPage = () => {
           padding="p-2"
           paddingTop="pt-3"
           text="GitHub"
-          width="w-38"
+          textSize="text-sm md:text-lg"
+          width="md:w-38"
           icon={
-            <FiGithub className="text-offWhite w-6 h-6 pb-1 pr-1 inline-block" />
+            <FiGithub className="text-offWhite w-4 h-4 md:w-6 md:h-6 pb-1 pr-1 inline-block" />
           }
         />
       </div>

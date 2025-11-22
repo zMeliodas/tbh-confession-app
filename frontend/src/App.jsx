@@ -7,11 +7,11 @@ import RegisterPage from "src/Components/Pages/RegisterPage/RegisterPage";
 import ProfilePage from "./Components/Pages/ProfilePage/ProfilePage";
 import ShareLinkModal from "./Components/Modals/ShareLinkModal";
 import ConfessionPage from "./Components/Pages/ConfessionPage/ConfessionPage";
-import WhisperPage from "./Components/Pages/WhisperPage/WhisperPage"
+import WhisperPage from "./Components/Pages/WhisperPage/WhisperPage";
 
 const App = () => {
   const [isShowModalOpen, setIsShowModalOpen] = useState(false);
-  
+
   return (
     <>
       <Router>

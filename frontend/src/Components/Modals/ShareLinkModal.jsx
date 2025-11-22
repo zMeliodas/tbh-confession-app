@@ -25,7 +25,7 @@ const ShareLinkModal = ({ onClose }) => {
           Get anonymous messages using this link.
         </h2>
         <div className="flex">
-          <InputField placeholderText="link" inputType="text" />
+          <InputField width="w-68 sm:w-md" placeholderText="link" inputType="text" />
           <button className="text-lg flex content-center justify-center font-medium bg-purple font-mulish border-transparent p-2 w-12 ml-2 rounded-lg cursor-pointer hover:bg-purpleHover">
             <FaRegCopy className="w-6 h-6 text-offWhite" />
           </button>

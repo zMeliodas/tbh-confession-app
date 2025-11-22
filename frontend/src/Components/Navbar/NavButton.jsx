@@ -1,13 +1,13 @@
 import React from "react";
 
-const NavButton = ({ children, onClick }) => {
+const NavButton = ({ children, onClick, width, height, rounded }) => {
   return (
-    <span
-      onClick={() => onClick()}
-      className="flex items-center justify-center w-26 h-20 p-3 text-navIconColor hover:bg-hoverColorNav rounded-xl transition duration-300"
+    <button
+      onClick={onClick}
+      className={`flex items-center justify-center ${width} ${height} p-3 text-navIconColor hover:bg-hoverColorNav ${rounded} transition duration-300`}
     >
       {children}
-    </span>
+    </button>
   );
 };
 
