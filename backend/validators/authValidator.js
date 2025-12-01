@@ -8,10 +8,10 @@ export const validateAuthPayload = (req, res, next) => {
     });
   }
 
-  if (!password || password.length < 6) {
+  if (!password || password.length < 8) {
     return res.status(400).json({
       success: true,
-      error: "Password is required and must be at least 6 characters",
+      error: "Password is required and must be at least 8 characters",
     });
   }
 

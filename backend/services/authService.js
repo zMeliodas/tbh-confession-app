@@ -8,7 +8,7 @@ dotenv.config();
 async function registerUser(username, password) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const newUser = await pool.query(
+  await pool.query(
     "INSERT INTO users (user_name, user_password) VALUES ($1, $2) RETURNING *",
     [username, hashedPassword]
   );
@@ -26,7 +26,10 @@ async function loginUser(username, password) {
   );
 
   if (result.rows.length === 0) {
-    return res.status(401).send("Username doesn't exist");
+    return {
+      success: false,
+      message: "Username doesn't exist",
+    };
   }
 
   const user = result.rows[0];
@@ -44,7 +47,10 @@ async function loginUser(username, password) {
   const validPassword = await bcrypt.compare(password, user.user_password);
 
   if (!validPassword) {
-    return res.status(401).send("Incorrect password");
+    return {
+      success: false,
+      message: "Incorrect password",
+    };
   }
 
   return {

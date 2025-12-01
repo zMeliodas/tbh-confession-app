@@ -5,7 +5,7 @@ async function getProfile(req, res) {
     const { userId } = req.body;
 
     const result = await getCredentials(userId);
-
+    
     if (!result.success) {
       return res.status(400).json({
         success: false,

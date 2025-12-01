@@ -10,7 +10,7 @@ const CustomReceivedMessageCard = ({ content }) => {
     >
       <div className="flex justify-center font-black">
         <span
-          className={`text-offWhite text-sm sm:text-md md:text-lg font-mulish font-black select-none`}
+          className={`text-offWhite text-sm sm:text-base md:text-lg font-mulish font-black select-none`}
         >
           From an unknown sender
         </span>
@@ -18,7 +18,7 @@ const CustomReceivedMessageCard = ({ content }) => {
 
       <div className="bg-backgroundColor rounded-lg p-4 mt-2">
         <span
-          className={`text-textFieldColor text-sm sm:text-md md:text-lg font-mulish  wrap-break-words`}
+          className={`text-textFieldColor text-sm sm:text-base md:text-lg font-mulish  wrap-break-words`}
         >
           {content}
         </span>
