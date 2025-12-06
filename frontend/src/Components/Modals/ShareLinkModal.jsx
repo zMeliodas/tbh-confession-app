@@ -5,7 +5,7 @@ import { IoCloseOutline } from "react-icons/io5";
 
 const ShareLinkModal = ({ onClose }) => {
   return (
-    <div className="fixed flex h-full w-full justify-center content-center items-center bg-black/50 transition">
+    <div className="fixed flex h-full w-full justify-center content-center items-center bg-black/50 transition z-10">
       <div className="bg-cardBg flex flex-col p-4 justify-start content-start items-start border rounded-xl border-borderColor">
         <div className="flex justify-between items-center w-full">
           <h1 className="text-2xl  text-primaryTextColor font-mulish font-bold">

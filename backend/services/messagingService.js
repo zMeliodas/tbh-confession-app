@@ -1,4 +1,4 @@
-import pool from "../db.js";
+import pool from "../config/db.js";
 
 async function createMessage(senderId, receiverId, content) {
   const result = await pool.query(

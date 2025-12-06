@@ -13,7 +13,7 @@ export const authorizeUser = (req, res, next) => {
 
     const payload = jwt.verify(token, jwtSecretKey);
 
-    req.user = payload.user_id;
+    req.user = payload.id;
   } catch (error) {
     return res.status(403).json({
       error: "Invalid Token",

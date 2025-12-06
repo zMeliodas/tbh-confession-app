@@ -1,29 +1,46 @@
-import pool from "../db.js";
+import pool from "../config/db.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
-import jwt from "jsonwebtoken";
+import { generateToken } from "../utils/jwtTokenGenerator.js";
 
 dotenv.config();
 
 async function registerUser(username, password) {
-  const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  await pool.query(
-    "INSERT INTO users (user_name, user_password) VALUES ($1, $2) RETURNING *",
-    [username, hashedPassword]
-  );
+    const newUser = await pool.query(
+      "INSERT INTO users (user_name, user_password) VALUES ($1, $2) RETURNING *",
+      [username, hashedPassword]
+    );
 
-  return {
-    success: true,
-    message: "User registered sucessfully",
-  };
+    const user = newUser.rows[0];
+    const token = generateToken(user);
+
+    return {
+      success: true,
+      message: "User registered successfully",
+      token,
+      user: {
+        user_id: user.user_id,
+        user_name: user.user_name,
+      },
+    };
+  } catch (error) {
+    if (error.code === "23505") {
+      // PostgreSQL unique violation code
+      return {
+        success: false,
+        message: "Username already taken",
+      };
+    }
+  }
 }
 
 async function loginUser(username, password) {
-  const result = await pool.query(
-    "SELECT * FROM users WHERE user_name = $1 LIMIT 1",
-    [username]
-  );
+  const result = await pool.query("SELECT * FROM users WHERE user_name = $1", [
+    username,
+  ]);
 
   if (result.rows.length === 0) {
     return {
@@ -33,16 +50,6 @@ async function loginUser(username, password) {
   }
 
   const user = result.rows[0];
-  const jwtSecretKey = process.env.JWT_SECRET_KEY;
-
-  const token = jwt.sign(
-    {
-      id: user.user_id,
-      username: user.user_name,
-    },
-    jwtSecretKey,
-    { expiresIn: "1h" }
-  );
 
   const validPassword = await bcrypt.compare(password, user.user_password);
 
@@ -53,10 +60,16 @@ async function loginUser(username, password) {
     };
   }
 
+  const token = generateToken(user);
+
   return {
     success: true,
     message: "Login successful",
     token,
+    user: {
+      user_id: user.user_id,
+      user_name: user.user_name,
+    },
   };
 }
 

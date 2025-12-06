@@ -7,15 +7,17 @@ async function register(req, res) {
     const result = await registerUser(username, password);
 
     if (!result.success) {
-      return res.status(400).json({
-        success: false,
-        error: "Error",
+      return res.status(401).json({
+        success: result.success,
+        error: result.message,
       });
     }
 
     res.status(201).json({
-      success: true,
+      success: result.success,
       message: result.message,
+      token: result.token,
+      user: result.user,
     });
   } catch (error) {
     res.status(500).json({
@@ -32,16 +34,17 @@ async function login(req, res) {
     const result = await loginUser(username, password);
 
     if (!result.success) {
-      return res.status(400).json({
-        success: false,
+      return res.status(401).json({
+        success: result.success,
         error: result.message,
       });
     }
 
-    res.status(201).json({
-      success: true,
+    res.status(200).json({
+      success: result.success,
       message: result.message,
       token: result.token,
+      user: result.user,
     });
   } catch (error) {
     res.status(500).json({

@@ -6,7 +6,7 @@ const InputField = ({
   label,
   labelTextSize,
   inputType,
-  required = true,
+  required = false,
   width,
   onChange,
 }) => {
