@@ -2,11 +2,15 @@ import InputField from "src/Components/common/InputField";
 import CustomButtonGray from "src/Components/common/CustomButtonGray";
 import CustomButtonPurple from "src/Components/common/CustomButtonPurple";
 import CustomSpinner from "src/Components/common/CustomSpinner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "src/providers/AuthProvider";
+import { handleEnterPress } from "../../../utils/handleEnterPress";
 
 const RegisterPage = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const { register } = useAuth();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [registerCredentials, setRegisterCredentials] = useState({
     username: "",
     password: "",
@@ -31,8 +35,13 @@ const RegisterPage = () => {
     }
   };
 
-  const handleRegisterClick = () => {
-    const newErrors = {};
+  const handleRegisterClick = async (e) => {
+    e?.preventDefault();
+    const newErrors = {
+      username: "",
+      password: "",
+      confirmPassword: "",
+    };
 
     if (registerCredentials.username.length < 3) {
       newErrors.username = "Username must be at least 3 characters";
@@ -46,13 +55,32 @@ const RegisterPage = () => {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
-    setErrors(newErrors);
+    const hasErrors =
+      newErrors.username || newErrors.password || newErrors.confirmPassword;
 
-    const hasErrors = Object.keys(newErrors).length > 0;
+    if (hasErrors) {
+      setErrors(newErrors);
+      return;
+    }
 
     if (!hasErrors) {
-      // proceed with registration API call
-      console.log("All fields valid, submit form");
+      try {
+        setIsLoading(true);
+        await register(
+          registerCredentials.username.trim(),
+          registerCredentials.password.trim()
+        );
+
+        navigate("/profile", { replace: true });
+      } catch (error) {
+        setErrors({
+          username: error.message,
+          password: "",
+          confirmPassword: "",
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -82,6 +110,7 @@ const RegisterPage = () => {
           inputType="text"
           width="w-76 sm:w-96 md:w-108"
           onChange={handleInputChange("username")}
+          onKeyDown={(e) => handleEnterPress(e, handleRegisterClick)}
           required
         />
         {errors.username && (
@@ -95,6 +124,7 @@ const RegisterPage = () => {
           inputType="password"
           width="w-76 sm:w-96 md:w-108"
           onChange={handleInputChange("password")}
+          onKeyDown={(e) => handleEnterPress(e, handleRegisterClick)}
           required
         />
         {errors.password && (
@@ -108,6 +138,7 @@ const RegisterPage = () => {
           inputType="password"
           width="w-76 sm:w-96 md:w-108"
           onChange={handleInputChange("confirmPassword")}
+          onKeyDown={(e) => handleEnterPress(e, handleRegisterClick)}
           required
         />
         {errors.confirmPassword && (
@@ -122,13 +153,14 @@ const RegisterPage = () => {
             padding="p-1"
             text={
               <div className="flex items-center justify-center gap-1">
-                {isLoading && <CustomSpinner color="color-white/50"/>}
+                {isLoading && <CustomSpinner color="color-white/50" />}
                 <span>Register</span>
               </div>
             }
             width="w-76 sm:w-96 md:w-108"
             disabled={!allFilled}
             onClick={handleRegisterClick}
+            onKeyDown={(e) => handleEnterPress(e, handleRegisterClick)}
           />
         </div>
 

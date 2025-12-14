@@ -8,8 +8,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg text-primaryTextColor transition-colors"
-      aria-label="Toggle theme"
+      className="p-2 rounded-lg text-primaryTextColor transition-colors hover:scale-110"
     >
       {theme === "dark" ? (
         <MdOutlineWbSunny className="w-8 h-8 cursor-pointer " />

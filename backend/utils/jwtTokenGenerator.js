@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export function generateToken(user) {
+export const generateToken = (user) => {
   const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
   return jwt.sign(

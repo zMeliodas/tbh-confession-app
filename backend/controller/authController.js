@@ -54,4 +54,14 @@ async function login(req, res) {
   }
 }
 
-export { register, login };
+async function verifyUser(req, res) {
+  res.status(200).json({
+    success: true,
+    user: {
+      user_id: req.user.id,
+      user_name: req.user.username,
+    },
+  });
+}
+
+export { register, login, verifyUser };

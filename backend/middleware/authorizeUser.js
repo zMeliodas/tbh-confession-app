@@ -12,8 +12,8 @@ export const authorizeUser = (req, res, next) => {
       });
 
     const payload = jwt.verify(token, jwtSecretKey);
-
-    req.user = payload.id;
+ 
+    req.user = payload;
   } catch (error) {
     return res.status(403).json({
       error: "Invalid Token",

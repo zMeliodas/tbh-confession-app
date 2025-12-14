@@ -8,7 +8,9 @@ const InputField = ({
   inputType,
   required = false,
   width,
+  height = "h-10",
   onChange,
+  onKeyDown
 }) => {
 
   const handleChange = (e) => {
@@ -28,9 +30,10 @@ const InputField = ({
       </label>
       <input
         type={inputType}
+        onKeyDown={onKeyDown}
         placeholder={placeholderText}
         onChange={handleChange}
-        className={`text-sm text-primaryTextColor bg-textFieldBg placeholder:text-secondaryTextColor font-mulish font-light border border-borderColor rounded-md p-2 mt-0.5 h-10 ${width}`}
+        className={`text-sm text-primaryTextColor bg-textFieldBg placeholder:text-secondaryTextColor font-mulish font-light border border-borderColor rounded-md p-2 mt-0.5 ${height} ${width}`}
       />
     </>
   );

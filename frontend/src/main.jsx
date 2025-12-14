@@ -2,15 +2,15 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import UserProvider from "./providers/UserProvider.jsx";
-import { ThemeProvider } from "./providers/ThemeProvider.jsx";
+import AuthProvider from "./providers/AuthProvider.jsx";
+import ThemeProvider from "./providers/ThemeProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
-      <UserProvider>
+      <AuthProvider>
         <App />
-      </UserProvider>
+      </AuthProvider>
     </ThemeProvider>
   </StrictMode>
 );

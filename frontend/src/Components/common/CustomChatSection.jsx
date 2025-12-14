@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { IoPaperPlaneOutline } from "react-icons/io5";
-import { getUserInfo } from "src/providers/UserProvider.jsx";
+import { useAuth } from "src/providers/AuthProvider.jsx";
+import { getInitials } from "../../utils/getInitials";
 
 const CustomChatSection = () => {
   const [message, setMessage] = useState("");
 
-  const {user, getInitials} = getUserInfo();
+  const { user } = useAuth();
 
   return (
     <>
@@ -13,16 +14,18 @@ const CustomChatSection = () => {
         <div className="flex justify-start border-b border-borderColor gap-2 px-4 py-4 w-full">
           {user.image ? (
             <img
-              src={user.image}
+              src=""
               alt="Profile"
               className="w-8 h-8 rounded-full object-cover select-none"
             />
           ) : (
             <div className="w-8 h-8 rounded-full bg-purple flex items-center justify-center text-lg select-none font-semibold text-primaryTextColor">
-              {getInitials(user.username)}
+              {getInitials(user.user_name)}
             </div>
           )}
-          <span className="text-primaryTextColor font-mulish font-bold pt-0.5">cedlemuel</span>
+          <span className="text-primaryTextColor font-mulish font-bold pt-0.5">
+            {user.user_name}
+          </span>
         </div>
 
         <div className="flex h-full gap-10 p-2">

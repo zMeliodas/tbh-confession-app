@@ -34,43 +34,51 @@ async function registerUser(username, password) {
         message: "Username already taken",
       };
     }
+
+    console.error("Registration service error:", error);
+    throw new Error("Registration failed");
   }
 }
 
 async function loginUser(username, password) {
-  const result = await pool.query("SELECT * FROM users WHERE user_name = $1", [
-    username,
-  ]);
+  try {
+    const result = await pool.query(
+      "SELECT * FROM users WHERE user_name = $1",
+      [username]
+    );
 
-  if (result.rows.length === 0) {
+    if (result.rows.length === 0) {
+      return {
+        success: false,
+        message: "Invalid credentials",
+      };
+    }
+
+    const user = result.rows[0];
+    const validPassword = await bcrypt.compare(password, user.user_password);
+
+    if (!validPassword) {
+      return {
+        success: false,
+        message: "Invalid credentials",
+      };
+    }
+
+    const token = generateToken(user);
+
     return {
-      success: false,
-      message: "Username doesn't exist",
+      success: true,
+      message: "Login successful",
+      token,
+      user: {
+        user_id: user.user_id,
+        user_name: user.user_name,
+      },
     };
+  } catch (error) {
+    console.error("Login service error:", error);
+    throw new Error("Login failed");
   }
-
-  const user = result.rows[0];
-
-  const validPassword = await bcrypt.compare(password, user.user_password);
-
-  if (!validPassword) {
-    return {
-      success: false,
-      message: "Incorrect password",
-    };
-  }
-
-  const token = generateToken(user);
-
-  return {
-    success: true,
-    message: "Login successful",
-    token,
-    user: {
-      user_id: user.user_id,
-      user_name: user.user_name,
-    },
-  };
 }
 
 export { registerUser, loginUser };

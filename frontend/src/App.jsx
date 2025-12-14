@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, Activity } from "react";
 import Navbar from "src/Components/Navbar/Navbar";
 import LandingPage from "src/Components/Pages/LandingPage/LandingPage";
 import LoginPage from "src/Components/Pages/LoginPage/LoginPage";
@@ -8,6 +8,8 @@ import ProfilePage from "./Components/Pages/ProfilePage/ProfilePage";
 import ShareLinkModal from "./Components/Modals/ShareLinkModal";
 import ConfessionPage from "./Components/Pages/ConfessionPage/ConfessionPage";
 import WhisperPage from "./Components/Pages/WhisperPage/WhisperPage";
+import SettingsPage from "./Components/Pages/SettingsPage/SettingsPage";
+import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 const App = () => {
   const [isShowModalOpen, setIsShowModalOpen] = useState(false);
@@ -17,17 +19,21 @@ const App = () => {
       <Router>
         <Navbar onShareLinkClick={() => setIsShowModalOpen(true)} />
 
-        {isShowModalOpen && (
+        <Activity mode={isShowModalOpen ? "visible" : "hidden"}>
           <ShareLinkModal onClose={() => setIsShowModalOpen(false)} />
-        )}
+        </Activity>
 
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/confess" element={<ConfessionPage />} />
-          <Route path="/whisper" element={<WhisperPage />} />
-          <Route path="/inbox" element={<ProfilePage />} />
+
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/confess" element={<ConfessionPage />} />
+            <Route path="/whisper" element={<WhisperPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Route>
         </Routes>
       </Router>
     </>

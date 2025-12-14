@@ -2,9 +2,15 @@ import { useState } from "react";
 import InputField from "../../common/InputField";
 import CustomButtonPurple from "../../common/CustomButtonPurple";
 import CustomButtonGray from "../../common/CustomButtonGray";
-import { Link } from "react-router-dom";
+import CustomSpinner from "../../common/CustomSpinner";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../providers/AuthProvider";
+import { handleEnterPress } from "../../../utils/handleEnterPress";
 
 const LoginPage = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [loginCredentials, setLoginCredentials] = useState({
     username: "",
     password: "",
@@ -13,18 +19,27 @@ const LoginPage = () => {
   const [errors, setErrors] = useState({
     username: "",
     password: "",
+    invalid: "",
   });
 
   const handleInputChange = (field) => (e) => {
-    setLoginCredentials({ ...setLoginCredentials, [field]: e.target.value });
+    setLoginCredentials({
+      ...loginCredentials,
+      [field]: e.target.value,
+    });
 
-    if (errors[field]) {
-      setErrors({ ...errors, [field]: "" });
+    if (errors[field] || errors.invalid) {
+      setErrors({ ...errors, [field]: "", invalid: "" });
     }
   };
 
-  const handleLoginClick = () => {
-    const newErrors = {};
+  const handleLoginClick = async (e) => {
+    e?.preventDefault();
+    const newErrors = {
+      username: "",
+      password: "",
+      invalid: "",
+    };
 
     if (loginCredentials.username.trim().length === 0) {
       newErrors.username = "Username is required";
@@ -34,13 +49,28 @@ const LoginPage = () => {
       newErrors.password = "Password is required";
     }
 
-    setErrors(newErrors);
+    const hasErrors = newErrors.username || newErrors.password;
 
-    const hasErrors = Object.keys(newErrors).length > 0;
+    if (hasErrors) {
+      setErrors(newErrors);
+      return;
+    }
 
-    if (!hasErrors) {
-      // proceed with registration API call
-      console.log("All fields valid, submit form");
+    try {
+      setIsLoading(true);
+      await login(
+        loginCredentials.username.trim(),
+        loginCredentials.password.trim()
+      );
+      navigate("/profile", { replace: true });
+    } catch (error) {
+      setErrors({
+        username: "",
+        password: "",
+        invalid: error.message,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -60,9 +90,10 @@ const LoginPage = () => {
           inputType="text"
           width="w-76 sm:w-96 md:w-108"
           onChange={handleInputChange("username")}
+          onKeyDown={(e) => handleEnterPress(e, handleLoginClick)}
         />
         {errors.username && (
-          <span className="font-mulish font-base text-red-400">
+          <span className="font-mulish text-xs md:text-base text-red-400">
             {errors.username}
           </span>
         )}
@@ -73,20 +104,35 @@ const LoginPage = () => {
           inputType="password"
           width="w-76 sm:w-96 md:w-108"
           onChange={handleInputChange("password")}
+          onKeyDown={(e) => handleEnterPress(e, handleLoginClick)}
         />
         {errors.password && (
-          <span className="font-mulish font-base text-red-400">
+          <span className="font-mulish text-xs md:text-base text-red-400">
             {errors.password}
           </span>
+        )}
+
+        {errors.invalid && (
+          <div className="flex justify-center mt-4">
+            <span className="font-mulish text-xs md:text-base text-red-400">
+              {errors.invalid}
+            </span>
+          </div>
         )}
 
         <div className="mt-4">
           <CustomButtonPurple
             textSize="text-base md:text-lg"
             padding="p-1"
-            text="Login"
+            text={
+              <div className="flex items-center justify-center gap-1">
+                {isLoading && <CustomSpinner color="color-white" />}
+                <span>Login</span>
+              </div>
+            }
             width="w-76 sm:w-96 md:w-108"
             onClick={handleLoginClick}
+            onKeyDown={(e) => handleEnterPress(e, handleLoginClick)}
           />
         </div>
 
