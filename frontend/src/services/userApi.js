@@ -19,4 +19,23 @@ export const userApi = {
 
     return data;
   },
+
+  async updateUserName(username, newUserName, token) {
+    const response = await fetch(`${API_BASE_URL}/user/updateUserName`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, newUserName }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Username update failed");
+    }
+
+    return data;
+  },
 };

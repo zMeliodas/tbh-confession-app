@@ -1,8 +1,10 @@
-import React, { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import CustomChatListCard from "./CustomChatListCard";
+import { useAuth } from "../../providers/AuthProvider";
 
 const CustomWhisperSection = () => {
+  const { user } = useAuth();
+
   return (
     <div className="bg-cardBg border border-borderColor rounded-lg flex flex-col gap-2 p-4 shadow-2xl">
       <div className="text-primaryTextColor font-mulish font-bold text-2xl">
@@ -22,7 +24,7 @@ const CustomWhisperSection = () => {
       </div>
 
       <div className="flex flex-col">
-        <CustomChatListCard username="cedlemuel" content="hahha" />
+        <CustomChatListCard username={user.user_name} content="hahha" />
       </div>
     </div>
   );

@@ -2,20 +2,12 @@ import React, { useState } from "react";
 import { FiShare2 } from "react-icons/fi";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import CustomChatBubble from "./CustomChatBubble";
+import { useAuth } from "../../providers/AuthProvider";
+import { getInitials } from "../../utils/getInitials";
 
 const CustomSendAMessageCard = () => {
   const [message, setMessage] = useState("");
-
-  const user = {
-    username: "cedlemuel",
-    image: "",
-    link: "www.tbh.link/to/cedlemuel",
-  };
-
-  const getInitials = (name) => {
-    if (!name) return "";
-    return name.trim().charAt(0).toUpperCase();
-  };
+  const { user } = useAuth();
 
   return (
     <div className="bg-cardBg rounded-2xl w-full sm:w-2xl mx-4 border border-borderColor overflow-hidden">
@@ -23,7 +15,7 @@ const CustomSendAMessageCard = () => {
         <div className="flex items-center gap-2 text-offWhite">
           <span className="text-sm font-mulish select-none">To:</span>
           <span className="text-offWhite font-mulish font-bold">
-            @cedlemuel
+            @{user.user_name}
           </span>
           <button>
             <FiShare2 className="w-4 h-4 cursor-pointer duration-200 ease-in-out select-none hover:scale-110" />
@@ -42,7 +34,7 @@ const CustomSendAMessageCard = () => {
               />
             ) : (
               <div className="w-8 h-8 rounded-full bg-purple flex items-center justify-center text-lg font-semibold select-none text-offWhite">
-                {getInitials(user.username)}
+                {getInitials(user.user_name)}
               </div>
             )}
           </div>

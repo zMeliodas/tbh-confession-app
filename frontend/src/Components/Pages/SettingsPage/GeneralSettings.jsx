@@ -2,11 +2,12 @@ import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import InputField from "../../common/InputField";
 import CustomButtonPurple from "../../common/CustomButtonPurple";
+import { userApi } from "../../../services/userApi";
 import { useAuth } from "../../../providers/AuthProvider";
 
 const GeneralSettings = () => {
-  const { user } = useAuth();
-  const [currentUserName, setCurrentUserName] = useState(user.user_name);
+  const { user, token, setUser } = useAuth();
+  const [newUserName, setNewUserName] = useState(user.user_name);
   const [currentPrompt, setCurrentPrompt] = useState(
     "Send me an anonymous message!"
   );
@@ -17,9 +18,9 @@ const GeneralSettings = () => {
         label="Username"
         inputType="text"
         width="w-76 sm:w-96 md:w-108"
-        value={currentUserName}
+        value={newUserName}
         onChange={(e) => {
-          setCurrentUserName(e.target.value);
+          setNewUserName(e.target.value);
         }}
         required
       />
@@ -40,12 +41,38 @@ const GeneralSettings = () => {
         <CustomButtonPurple
           textSize="text-xs"
           padding="p-2"
+          disabled={
+            newUserName === user.user_name &&
+            currentPrompt === "Send me an anonymous message!"
+          }
           text={
             <div className="flex items-center justify-center gap-1">
               <FaCheck className="w-4 h-4 pr-1" />
               <span>Save Changes</span>
             </div>
           }
+          onClick={async () => {
+            try {
+              if (
+                newUserName != user.user_name &&
+                currentPrompt != "Send me an anonymous message!"
+              ) {
+                // call both APIs
+              } else if (newUserName != user.user_name) {
+                await userApi.updateUserName(
+                  user.user_name,
+                  newUserName,
+                  token
+                );
+                setUser((prev) => ({ ...prev, user_name: newUserName }));
+                console.log("Username updated successfully");
+              } else if (currentPrompt != "Send me an anonymous message!") {
+                // call prompt API
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          }}
           width="w-34"
         />
       </div>
