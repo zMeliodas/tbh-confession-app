@@ -8,7 +8,7 @@ import AccountSettings from "./AccountSettings";
 import { useAuth } from "../../../providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
-const SettingsPage = () => {
+const SettingsPage = ({onDeleteAccountClick}) => {
   const [activeTab, setActiveTab] = useState("general");
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -63,7 +63,7 @@ const SettingsPage = () => {
         </Activity>
 
         <Activity mode={activeTab === "account" ? "visible" : "hidden"}>
-          <AccountSettings />
+          <AccountSettings onDeleteAccountClick={onDeleteAccountClick} />
         </Activity>
       </div>
     </main>

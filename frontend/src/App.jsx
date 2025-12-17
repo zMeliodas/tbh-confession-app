@@ -10,17 +10,25 @@ import ConfessionPage from "./Components/Pages/ConfessionPage/ConfessionPage";
 import WhisperPage from "./Components/Pages/WhisperPage/WhisperPage";
 import SettingsPage from "./Components/Pages/SettingsPage/SettingsPage";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
+import DeleteAccountModal from "./Components/Modals/DeleteAccountModal";
 
 const App = () => {
-  const [isShowModalOpen, setIsShowModalOpen] = useState(false);
+  const [showShareLinkModal, setShowShareLinkModal] = useState(false);
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
   return (
     <>
       <Router>
-        <Navbar onShareLinkClick={() => setIsShowModalOpen(true)} />
+        <Navbar onShareLinkClick={() => setShowShareLinkModal(true)} />
 
-        <Activity mode={isShowModalOpen ? "visible" : "hidden"}>
-          <ShareLinkModal onClose={() => setIsShowModalOpen(false)} />
+        {showDeleteAccountModal && (
+          <DeleteAccountModal
+            onClose={() => setShowDeleteAccountModal(false)}
+          />
+        )}
+
+        <Activity mode={showShareLinkModal ? "visible" : "hidden"}>
+          <ShareLinkModal onClose={() => setShowShareLinkModal(false)} />
         </Activity>
 
         <Routes>
@@ -32,7 +40,14 @@ const App = () => {
             <Route path="/confess" element={<ConfessionPage />} />
             <Route path="/whisper" element={<WhisperPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/settings" element={<SettingsPage />} />
+            <Route
+              path="/settings"
+              element={
+                <SettingsPage
+                  onDeleteAccountClick={() => setShowDeleteAccountModal(true)}
+                />
+              }
+            />
           </Route>
         </Routes>
       </Router>

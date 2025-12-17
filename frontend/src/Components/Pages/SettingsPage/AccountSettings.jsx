@@ -1,20 +1,39 @@
 import InputField from "../../common/InputField";
 import CustomButtonPurple from "../../common/CustomButtonPurple";
 import { FaKey } from "react-icons/fa";
+import { useState } from "react";
+const AccountSettings = ({ onDeleteAccountClick }) => {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-const AccountSettings = () => {
   return (
     <>
+      <InputField
+        label="Current Password"
+        inputType="text"
+        width="w-full"
+        onChange={(e) => {
+          setCurrentPassword(e.target.value);
+        }}
+      />
+
       <InputField
         label="New Password"
         inputType="text"
         width="w-full"
+        onChange={(e) => {
+          setNewPassword(e.target.value);
+        }}
       />
 
       <InputField
         label="Confirm Password"
         inputType="text"
         width="w-full"
+        onChange={(e) => {
+          setConfirmPassword(e.target.value);
+        }}
       />
 
       <div className="flex flex-row-reverse mt-6">
@@ -33,7 +52,9 @@ const AccountSettings = () => {
 
       <div className="border-t-2 border-dashed border-muted pt-8 mt-8 text-customGray">
         <div className="border-2 rounded-xl p-4">
-          <p class="font-mulish font-bold tracking-tight text-primaryTextColor">Danger Zone</p>
+          <p className="font-mulish font-bold tracking-tight text-primaryTextColor">
+            Danger Zone
+          </p>
           <div>
             <span className="font-mulish text-primaryTextColor text-light text-sm">
               This action will permanently delete your profile and messages. All
@@ -42,6 +63,7 @@ const AccountSettings = () => {
             <button
               className="border-2 p-2 rounded-lg text-red-500 mt-4 w-full hover:bg-hoverColorNav"
               type="button"
+              onClick={onDeleteAccountClick}
             >
               Delete Account
             </button>

@@ -12,9 +12,7 @@ const ShareLinkModal = ({ onClose }) => {
             Share link
           </h1>
           <button
-            onClick={() => {
-              onClose();
-            }}
+            onClick={onClose}
             className="text-lg text-primaryTextColor flex content-center justify-center font-medium bg-transparent font-mulish border-transparent p-2 w-12 ml-2 rounded-lg cursor-pointer"
           >
             <IoCloseOutline className="w-6 h-6" />
@@ -25,16 +23,18 @@ const ShareLinkModal = ({ onClose }) => {
           Get anonymous messages using this link.
         </h2>
         <div className="flex">
-          <InputField width="w-68 sm:w-md" placeholderText="link" inputType="text" />
+          <InputField
+            width="w-68 sm:w-md"
+            placeholderText="link"
+            inputType="text"
+          />
           <button className="text-lg flex content-center justify-center font-medium bg-purple font-mulish border-transparent p-2 w-12 ml-2 rounded-lg cursor-pointer hover:bg-purpleHover">
             <FaRegCopy className="w-6 h-6 text-offWhite" />
           </button>
         </div>
 
         <button
-          onClick={() => {
-            onClose();
-          }}
+          onClick={onClose}
           className="text-sm text-primaryTextColor font-medium bg-greyButton font-mulish border p-2 mt-4 border-borderColor rounded-xl cursor-pointer hover:bg-hoverColorNav"
         >
           Close

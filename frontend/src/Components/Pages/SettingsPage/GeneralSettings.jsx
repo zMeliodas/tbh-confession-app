@@ -1,16 +1,26 @@
-import React from "react";
+import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import InputField from "../../common/InputField";
 import CustomButtonPurple from "../../common/CustomButtonPurple";
+import { useAuth } from "../../../providers/AuthProvider";
 
 const GeneralSettings = () => {
+  const { user } = useAuth();
+  const [currentUserName, setCurrentUserName] = useState(user.user_name);
+  const [currentPrompt, setCurrentPrompt] = useState(
+    "Send me an anonymous message!"
+  );
+
   return (
     <>
       <InputField
-        placeholderText="ilovecozl"
         label="Username"
         inputType="text"
         width="w-76 sm:w-96 md:w-108"
+        value={currentUserName}
+        onChange={(e) => {
+          setCurrentUserName(e.target.value);
+        }}
         required
       />
 
@@ -18,8 +28,12 @@ const GeneralSettings = () => {
         label="Prompt"
         inputType="text"
         width="w-76 sm:w-96 md:w-108"
-        height="h-30"
-        required
+        value={currentPrompt}
+        onChange={(e) => {
+          setCurrentPrompt(e.target.value);
+        }}
+        paddingBottom="pb-30"
+        isTextarea
       />
 
       <div className="flex flex-row-reverse mt-6">
