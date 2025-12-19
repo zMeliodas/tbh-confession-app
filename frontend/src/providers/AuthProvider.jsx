@@ -1,17 +1,20 @@
 import { useEffect, useState, createContext, useContext } from "react";
 import { api } from "../services/authApi";
+import CustomLoadingScreen from "../Components/common/CustomLoadingScreen";
 
 const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const verifyStoredToken = async () => {
       const storedToken = localStorage.getItem("token");
 
       if (!storedToken) {
+        setLoading(false);
         return;
       }
 
@@ -29,6 +32,8 @@ const AuthProvider = ({ children }) => {
         console.error("Token verification failed: ", error);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -61,6 +66,10 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
   };
+
+  if (loading) {
+    return <CustomLoadingScreen />;
+  }
 
   return (
     <AuthContext.Provider

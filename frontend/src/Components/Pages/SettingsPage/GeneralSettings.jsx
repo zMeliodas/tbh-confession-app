@@ -75,7 +75,6 @@ const GeneralSettings = () => {
                   token
                 );
                 setUser((prev) => ({ ...prev, user_name: newUserName }));
-                console.log("Username updated successfully");
               } else if (newPrompt != user.user_prompt) {
                 await userApi.updateUserPrompt(
                   user.user_name,
