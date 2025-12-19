@@ -60,6 +60,7 @@ async function verifyUser(req, res) {
     user: {
       user_id: req.user.id,
       user_name: req.user.username,
+      user_prompt: req.user.prompt ?? null,
     },
   });
 }

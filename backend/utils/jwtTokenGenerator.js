@@ -7,8 +7,9 @@ export const generateToken = (user) => {
     {
       id: user.user_id,
       username: user.user_name,
+      prompt: user.user_prompt,
     },
     jwtSecretKey,
     { expiresIn: "1h" }
   );
-}
+};
