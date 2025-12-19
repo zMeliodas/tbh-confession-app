@@ -6,9 +6,9 @@ import { userApi } from "../../../services/userApi";
 import { useAuth } from "../../../providers/AuthProvider";
 
 const GeneralSettings = () => {
-  const { user, token, setUser, updateUser } = useAuth();
+  const { user, token, updateUser } = useAuth();
   const [newUserName, setNewUserName] = useState(user.user_name);
-  const [newPrompt, setNewPrompt] = useState(user.user_prompt);
+  const [newPrompt, setNewPrompt] = useState(user.user_prompt || "");
 
   return (
     <>
@@ -50,41 +50,32 @@ const GeneralSettings = () => {
           }
           onClick={async () => {
             try {
-              if (
-                newUserName != user.user_name &&
-                newPrompt != user.user_prompt
-              ) {
+              const updates = {};
+
+              if (newUserName !== user.user_name) {
                 await userApi.updateUserName(
                   user.user_name,
                   newUserName,
                   token
                 );
+                updates.user_name = newUserName;
+              }
 
+              if (newPrompt !== user.user_prompt) {
                 await userApi.updateUserPrompt(
-                  user.user_name,
-                  newPrompt,
-                  token
-                );
-
-                updateUser({user_name: newUserName, user_prompt: newPrompt});
-
-              } else if (newUserName != user.user_name) {
-                await userApi.updateUserName(
-                  user.user_name,
                   newUserName,
-                  token
-                );
-                updateUser({user_name: newUserName});
-              } else if (newPrompt != user.user_prompt) {
-                await userApi.updateUserPrompt(
-                  user.user_name,
                   newPrompt,
                   token
                 );
-                updateUser({user_prompt: newPrompt});
+                updates.user_prompt = newPrompt;
+              }
+
+              if (Object.keys(updates).length > 0) {
+                updateUser(updates);
               }
             } catch (error) {
-              console.log(error);
+              console.error("Update failed:", error);
+              // TODO: Show error message to user
             }
           }}
           width="w-34"
