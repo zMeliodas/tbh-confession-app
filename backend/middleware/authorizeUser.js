@@ -4,21 +4,29 @@ export const authorizeUser = (req, res, next) => {
   let jwtSecretKey = process.env.JWT_SECRET_KEY;
 
   try {
-    const token = req.headers["authorization"].split(" ")[1];
+    const authHeader = req.headers["authorization"];
 
-    if (!token)
+    if (!authHeader) {
       return res.status(403).json({
-        error: "Not Authorized",
+        error: "Authorization header missing",
       });
+    }
+    const token = authHeader.split(" ")[1];
+
+    if (!token) {
+      return res.status(403).json({
+        error: "Token missing",
+      });
+    }
 
     const payload = jwt.verify(token, jwtSecretKey);
- 
+
     req.user = payload;
+    
+    next();
   } catch (error) {
     return res.status(403).json({
       error: "Invalid Token",
     });
   }
-
-  next();
 };
