@@ -22,7 +22,7 @@ const CustomSendAMessageCard = () => {
           </button>
         </div>
       </div>
-
+          
       <div className="px-6 py-6">
         <div className="flex items-center gap-3 bg-promptContainer rounded-lg px-4 py-3">
           <div className="w-8 h-8 bg-textFieldGray rounded-lg flex items-center justify-center">
@@ -38,14 +38,14 @@ const CustomSendAMessageCard = () => {
               </div>
             )}
           </div>
-          <span className="text-primaryTextColor font-medium font-mulish select-none">
-            Send me an anonymous confession!
+          <span className="text-primaryTextColor font-medium font-mulish select-none break-all">
+            {user.user_prompt}
           </span>
         </div>
       </div>
 
       <div className="flex flex-col items-end pt-2 p-6 gap-0.5 h-56 overflow-y-auto custom-scroll">
-        <CustomChatBubble content="Hi nigga" />
+        <CustomChatBubble content="Hi kuys" />
         <CustomChatBubble content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non quis facilis error labore ipsum assumenda officia, temporibus natus exercitationem voluptatum. Tempora itaque ea mollitia, magni placeat incidunt dolor nesciunt saepe." />
         <CustomChatBubble content="Ano gawa mo kupal?" />
         <CustomChatBubble content="shabu pa nigga" />

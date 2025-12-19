@@ -38,4 +38,23 @@ export const userApi = {
 
     return data;
   },
+
+  async updateUserPrompt(username, newPrompt, token) {
+    const response = await fetch(`${API_BASE_URL}/user/updateUserPrompt`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newPrompt, username }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Prompt update failed");
+    }
+
+    return data;
+  },
 };

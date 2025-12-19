@@ -24,6 +24,7 @@ async function registerUser(username, password) {
       user: {
         user_id: user.user_id,
         user_name: user.user_name,
+        user_prompt: user.user_prompt,
       },
     };
   } catch (error) {

@@ -8,9 +8,7 @@ import { useAuth } from "../../../providers/AuthProvider";
 const GeneralSettings = () => {
   const { user, token, setUser } = useAuth();
   const [newUserName, setNewUserName] = useState(user.user_name);
-  const [currentPrompt, setCurrentPrompt] = useState(
-    "Send me an anonymous message!"
-  );
+  const [newPrompt, setNewPrompt] = useState(user.user_prompt);
 
   return (
     <>
@@ -29,9 +27,9 @@ const GeneralSettings = () => {
         label="Prompt"
         inputType="text"
         width="w-76 sm:w-96 md:w-108"
-        value={currentPrompt}
+        value={newPrompt}
         onChange={(e) => {
-          setCurrentPrompt(e.target.value);
+          setNewPrompt(e.target.value);
         }}
         paddingBottom="pb-30"
         isTextarea
@@ -42,8 +40,7 @@ const GeneralSettings = () => {
           textSize="text-xs"
           padding="p-2"
           disabled={
-            newUserName === user.user_name &&
-            currentPrompt === "Send me an anonymous message!"
+            newUserName === user.user_name && newPrompt === user.user_prompt
           }
           text={
             <div className="flex items-center justify-center gap-1">
@@ -55,9 +52,22 @@ const GeneralSettings = () => {
             try {
               if (
                 newUserName != user.user_name &&
-                currentPrompt != "Send me an anonymous message!"
+                newPrompt != user.user_prompt
               ) {
-                // call both APIs
+                await userApi.updateUserName(
+                  user.user_name,
+                  newUserName,
+                  token
+                );
+
+                await userApi.updateUserPrompt(
+                  user.user_name,
+                  newPrompt,
+                  token
+                );
+
+                setUser((prev) => ({ ...prev, user_name: newUserName }));
+                setUser((prev) => ({ ...prev, user_prompt: newPrompt }));
               } else if (newUserName != user.user_name) {
                 await userApi.updateUserName(
                   user.user_name,
@@ -66,8 +76,13 @@ const GeneralSettings = () => {
                 );
                 setUser((prev) => ({ ...prev, user_name: newUserName }));
                 console.log("Username updated successfully");
-              } else if (currentPrompt != "Send me an anonymous message!") {
-                // call prompt API
+              } else if (newPrompt != user.user_prompt) {
+                await userApi.updateUserPrompt(
+                  user.user_name,
+                  newPrompt,
+                  token
+                );
+                setUser((prev) => ({ ...prev, user_prompt: newPrompt }));
               }
             } catch (error) {
               console.log(error);

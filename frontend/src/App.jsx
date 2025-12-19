@@ -20,7 +20,7 @@ const App = () => {
     <>
       <Router>
         <Navbar onShareLinkClick={() => setShowShareLinkModal(true)} />
-
+        
         {showDeleteAccountModal && (
           <DeleteAccountModal
             onClose={() => setShowDeleteAccountModal(false)}
@@ -40,6 +40,7 @@ const App = () => {
             <Route path="/confess" element={<ConfessionPage />} />
             <Route path="/whisper" element={<WhisperPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+
             <Route
               path="/settings"
               element={
