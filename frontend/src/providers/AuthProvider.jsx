@@ -20,6 +20,7 @@ const AuthProvider = ({ children }) => {
 
       try {
         const data = await api.verifyUserToken(storedToken);
+        console.log("User from DB:", data.user);
 
         if (data.success) {
           setToken(storedToken);
@@ -60,6 +61,14 @@ const AuthProvider = ({ children }) => {
     return data;
   };
 
+  const updateUser = (updates) => {
+    setUser((prev) => {
+      const updatedUser = { ...prev, ...updates };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      return updatedUser;
+    });
+  };
+
   const logout = () => {
     setToken(null);
     setUser(null);
@@ -79,6 +88,7 @@ const AuthProvider = ({ children }) => {
         token,
         login,
         register,
+        updateUser,
         logout,
         isAuthenticated: !!token && !!user,
       }}

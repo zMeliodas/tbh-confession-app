@@ -1,4 +1,5 @@
 import { registerUser, loginUser } from "../services/authService.js";
+import { getUserById } from "../services/userService.js";
 
 async function register(req, res) {
   try {
@@ -55,14 +56,24 @@ async function login(req, res) {
 }
 
 async function verifyUser(req, res) {
-  res.status(200).json({
-    success: true,
-    user: {
-      user_id: req.user.id,
-      user_name: req.user.username,
-      user_prompt: req.user.prompt ?? null,
-    },
-  });
+  try {
+    const result = await getUserById(req.user.id);
+
+    res.status(200).json({
+      success: true,
+      user: {
+        user_id: result.user.user_id,
+        user_name: result.user.user_name,
+        user_prompt: result.user.user_prompt,
+      },
+    });
+  } catch (error) {
+    console.error("Error verifying user:", error);
+    res.status(404).json({
+      success: false,
+      error: error.message,
+    });
+  }
 }
 
 export { register, login, verifyUser };

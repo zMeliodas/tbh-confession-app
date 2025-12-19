@@ -6,7 +6,7 @@ import { userApi } from "../../../services/userApi";
 import { useAuth } from "../../../providers/AuthProvider";
 
 const GeneralSettings = () => {
-  const { user, token, setUser } = useAuth();
+  const { user, token, setUser, updateUser } = useAuth();
   const [newUserName, setNewUserName] = useState(user.user_name);
   const [newPrompt, setNewPrompt] = useState(user.user_prompt);
 
@@ -66,22 +66,22 @@ const GeneralSettings = () => {
                   token
                 );
 
-                setUser((prev) => ({ ...prev, user_name: newUserName }));
-                setUser((prev) => ({ ...prev, user_prompt: newPrompt }));
+                updateUser({user_name: newUserName, user_prompt: newPrompt});
+
               } else if (newUserName != user.user_name) {
                 await userApi.updateUserName(
                   user.user_name,
                   newUserName,
                   token
                 );
-                setUser((prev) => ({ ...prev, user_name: newUserName }));
+                updateUser({user_name: newUserName});
               } else if (newPrompt != user.user_prompt) {
                 await userApi.updateUserPrompt(
                   user.user_name,
                   newPrompt,
                   token
                 );
-                setUser((prev) => ({ ...prev, user_prompt: newPrompt }));
+                updateUser({user_prompt: newPrompt});
               }
             } catch (error) {
               console.log(error);
