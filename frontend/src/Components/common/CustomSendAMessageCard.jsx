@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FiShare2 } from "react-icons/fi";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import CustomChatBubble from "./CustomChatBubble";
 import { useAuth } from "../../providers/AuthProvider";
-import { getInitials } from "../../utils/getInitials";
+import CustomProfilePic from "./CustomProfilePic";
 
 const CustomSendAMessageCard = () => {
   const [message, setMessage] = useState("");
@@ -22,21 +22,17 @@ const CustomSendAMessageCard = () => {
           </button>
         </div>
       </div>
-          
+
       <div className="px-6 py-6">
         <div className="flex items-center gap-3 bg-promptContainer rounded-lg px-4 py-3">
           <div className="w-8 h-8 bg-textFieldGray rounded-lg flex items-center justify-center">
-            {user.image ? (
-              <img
-                src={user.image}
-                alt="Profile"
-                className="w-8 h-8 rounded-full object-cover select-none"
-              />
-            ) : (
-              <div className="w-8 h-8 rounded-full bg-purple flex items-center justify-center text-lg font-semibold select-none text-offWhite">
-                {getInitials(user.user_name)}
-              </div>
-            )}
+            <CustomProfilePic
+              userImage={user.image}
+              src={user.image}
+              username={user.user_name}
+              baseSize="w-8 h-8"
+              textSize="text-lg"
+            />
           </div>
           <span className="text-primaryTextColor font-medium font-mulish select-none break-all">
             {user.user_prompt}

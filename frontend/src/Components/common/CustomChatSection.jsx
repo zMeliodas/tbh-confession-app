@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { useAuth } from "src/providers/AuthProvider.jsx";
-import { getInitials } from "../../utils/getInitials";
+import CustomProfilePic from "./CustomProfilePic";
 
 const CustomChatSection = () => {
   const [message, setMessage] = useState("");
@@ -12,17 +12,13 @@ const CustomChatSection = () => {
     <>
       <div className="bg-cardBg border border-borderColor rounded-lg flex flex-col gap-2 shadow-2xl">
         <div className="flex justify-start border-b border-borderColor gap-2 px-4 py-4 w-full">
-          {user.image ? (
-            <img
-              src=""
-              alt="Profile"
-              className="w-8 h-8 rounded-full object-cover select-none"
-            />
-          ) : (
-            <div className="w-8 h-8 rounded-full bg-purple flex items-center justify-center text-lg select-none font-semibold text-primaryTextColor">
-              {getInitials(user.user_name)}
-            </div>
-          )}
+          <CustomProfilePic
+            userImage={user.image}
+            src={user.image}
+            username={user.user_name}
+            baseSize="w-8 h-8"
+            textSize="text-lg"
+          />
           <span className="text-primaryTextColor font-mulish font-bold pt-0.5">
             {user.user_name}
           </span>

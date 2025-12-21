@@ -43,7 +43,7 @@ const AccountSettings = ({ onDeleteAccountClick }) => {
           text={
             <div className="flex items-center justify-center gap-1">
               <FaKey className="w-4 h-4 pr-1" />
-              <span>Set Password</span>
+              <span className="font-mulish">Set Password</span>
             </div>
           }
           width="w-34"

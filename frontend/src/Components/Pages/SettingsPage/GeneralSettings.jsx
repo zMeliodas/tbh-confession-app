@@ -2,8 +2,11 @@ import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import InputField from "../../common/InputField";
 import CustomButtonPurple from "../../common/CustomButtonPurple";
+import CustomButtonGray from "../../common/CustomButtonGray";
 import { userApi } from "../../../services/userApi";
 import { useAuth } from "../../../providers/AuthProvider";
+import { RiImageAddFill } from "react-icons/ri";
+import CustomProfilePic from "../../common/CustomProfilePic";
 
 const GeneralSettings = () => {
   const { user, token, updateUser } = useAuth();
@@ -12,6 +15,30 @@ const GeneralSettings = () => {
 
   return (
     <>
+      <div className="flex flex-col gap-2 w-full items-center justify-center">
+        <CustomProfilePic
+          userImage={user.image}
+          src={user.image}
+          username={user.user_name}
+          textSize="text-2xl"
+          baseSize="w-24 h-24"
+        />
+
+        <input type="file" />
+
+        <CustomButtonGray
+          textSize="text-xs"
+          padding="p-1"
+          text={
+            <div className="flex items-center justify-center gap-1">
+              <RiImageAddFill className="w-5 h-5 pr-1" />
+              <span className="font-mulish">Change Avatar</span>
+            </div>
+          }
+          width="w-38"
+        />
+      </div>
+
       <InputField
         label="Username"
         inputType="text"
@@ -62,11 +89,7 @@ const GeneralSettings = () => {
               }
 
               if (newPrompt !== user.user_prompt) {
-                await userApi.updateUserPrompt(
-                  newUserName,
-                  newPrompt,
-                  token
-                );
+                await userApi.updateUserPrompt(newUserName, newPrompt, token);
                 updates.user_prompt = newPrompt;
               }
 

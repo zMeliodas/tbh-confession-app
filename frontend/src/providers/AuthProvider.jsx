@@ -20,7 +20,6 @@ const AuthProvider = ({ children }) => {
 
       try {
         const data = await api.verifyUserToken(storedToken);
-        console.log("User from DB:", data.user);
 
         if (data.success) {
           setToken(storedToken);
