@@ -12,6 +12,46 @@ const GeneralSettings = () => {
   const { user, token, updateUser } = useAuth();
   const [newUserName, setNewUserName] = useState(user.user_name);
   const [newPrompt, setNewPrompt] = useState(user.user_prompt || "");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSaveChanges = async () => {
+    setIsLoading(true);
+
+    try {
+      const updates = {};
+      const updatePromises = [];
+
+      if (newUserName !== user.user_name) {
+        updatePromises.push(
+          userApi.updateUserName(newUserName, token).then(() => {
+            updates.user_name = newUserName;
+          })
+        );
+      }
+
+      if (newPrompt !== user.user_prompt) {
+        updatePromises.push(
+          userApi.updateUserPrompt(newPrompt, token).then(() => {
+            updates.user_prompt = newPrompt;
+          })
+        );
+      }
+
+      await Promise.all(updatePromises);
+
+      if (Object.keys(updates).length > 0) {
+        updateUser(updates);
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
+      // SHOW VISIBLE ERROR HERE
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const hasChanges =
+    newUserName !== user.user_name || newPrompt !== user.user_prompt;
 
   return (
     <>
@@ -66,41 +106,14 @@ const GeneralSettings = () => {
         <CustomButtonPurple
           textSize="text-xs"
           padding="p-2"
-          disabled={
-            newUserName === user.user_name && newPrompt === user.user_prompt
-          }
+          disabled={!hasChanges}
           text={
             <div className="flex items-center justify-center gap-1">
               <FaCheck className="w-4 h-4 pr-1" />
               <span>Save Changes</span>
             </div>
           }
-          onClick={async () => {
-            try {
-              const updates = {};
-
-              if (newUserName !== user.user_name) {
-                await userApi.updateUserName(
-                  user.user_name,
-                  newUserName,
-                  token
-                );
-                updates.user_name = newUserName;
-              }
-
-              if (newPrompt !== user.user_prompt) {
-                await userApi.updateUserPrompt(newUserName, newPrompt, token);
-                updates.user_prompt = newPrompt;
-              }
-
-              if (Object.keys(updates).length > 0) {
-                updateUser(updates);
-              }
-            } catch (error) {
-              console.error("Update failed:", error);
-              // TODO: Show error message to user
-            }
-          }}
+          onClick={handleSaveChanges}
           width="w-34"
         />
       </div>

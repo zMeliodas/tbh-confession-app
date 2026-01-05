@@ -5,7 +5,7 @@ import { useAuth } from "../../providers/AuthProvider";
 import { useState } from "react";
 
 const DeleteAccountModal = ({ onClose }) => {
-  const { user, token, logout } = useAuth();
+  const { token, logout } = useAuth();
   const [confirmationText, setConfirmationText] = useState("");
   const isDisabled = confirmationText !== "delete my account";
 
@@ -45,7 +45,7 @@ const DeleteAccountModal = ({ onClose }) => {
         <button
           onClick={async () => {
             try {
-              await userApi.deleteUser(user.user_name, token);
+              await userApi.deleteUser(token);
               logout();
               onClose();
             } catch (error) {

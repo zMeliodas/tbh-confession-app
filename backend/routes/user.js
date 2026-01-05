@@ -1,15 +1,16 @@
 import { Router } from "express";
 import { authorizeUser } from "../middleware/authorizeUser.js";
-import { message } from "../controller/messagingController.js";
+import { createMessage } from "../controller/userController.js";
 import { deleteUser } from "../controller/userController.js";
 import { updateUserName } from "../controller/userController.js";
 import { updateUserPrompt } from "../controller/userController.js";
-import { validateNewUsername } from "../middleware/validateNewUsername.js";
-import { validateNewPrompt } from "../middleware/validateNewPrompt.js";
+import { validateNewUsername } from "../validators/newUsernameValidator.js";
+import { validateNewPrompt } from "../validators/newPromptValidator.js";
+import { validateCreateAMessage } from "../validators/messageValidator.js";
 
 const router = Router();
 
-router.post("/message", authorizeUser, message);
+router.post("/createMessage", authorizeUser, validateCreateAMessage, createMessage);
 
 router.delete("/deleteUser", authorizeUser, deleteUser);
 

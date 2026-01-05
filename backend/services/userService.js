@@ -1,8 +1,8 @@
 import pool from "../config/db.js";
 
-async function deleteUserAccount(username) {
-  const result = await pool.query("DELETE FROM users WHERE user_name = $1", [
-    username,
+async function deleteUserAccount(userId) {
+  const result = await pool.query("DELETE FROM users WHERE user_id = $1", [
+    userId,
   ]);
 
   if (result.rowCount === 0) {
@@ -32,11 +32,11 @@ async function getUserById(userId) {
   };
 }
 
-async function updateUser(currentUserName, newUserName) {
+async function updateUser(userId, newUserName) {
   try {
     const result = await pool.query(
-      "UPDATE users SET user_name = $1 WHERE user_name = $2 RETURNING *",
-      [newUserName, currentUserName]
+      "UPDATE users SET user_name = $1 WHERE user_id = $2 RETURNING *",
+      [newUserName, userId]
     );
 
     if (result.rowCount === 0) {
@@ -58,10 +58,10 @@ async function updateUser(currentUserName, newUserName) {
   }
 }
 
-async function updatePrompt(newPrompt, username) {
+async function updatePrompt(userId, newPrompt) {
   const result = await pool.query(
-    "UPDATE users SET user_prompt = $1 WHERE user_name = $2 RETURNING *",
-    [newPrompt, username]
+    "UPDATE users SET user_prompt = $1 WHERE user_id = $2 RETURNING *",
+    [newPrompt, userId]
   );
 
   if (result.rowCount === 0) {
@@ -75,4 +75,17 @@ async function updatePrompt(newPrompt, username) {
   };
 }
 
-export { deleteUserAccount, updateUser, updatePrompt, getUserById };
+async function message(senderId, receiverId, content) {
+  const result = await pool.query(
+    "INSERT INTO messages (sender_id, receiver_id, content) VALUES ($1, $2, $3) RETURNING receiver_id, content",
+    [senderId, receiverId, content]
+  );
+
+  return {
+    success: true,
+    message: "Message created successfully",
+    messageData: result.rows[0],
+  };
+}
+
+export { deleteUserAccount, updateUser, updatePrompt, getUserById, message };

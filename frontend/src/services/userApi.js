@@ -1,14 +1,13 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export const userApi = {
-  async deleteUser(username, token) {
+  async deleteUser(token) {
     const response = await fetch(`${API_BASE_URL}/user/deleteUser`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username }),
     });
 
     const data = await response.json();
@@ -20,14 +19,14 @@ export const userApi = {
     return data;
   },
 
-  async updateUserName(username, newUserName, token) {
+  async updateUserName(newUserName, token) {
     const response = await fetch(`${API_BASE_URL}/user/updateUserName`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, newUserName }),
+      body: JSON.stringify({ newUserName }),
     });
 
     const data = await response.json();
@@ -39,14 +38,14 @@ export const userApi = {
     return data;
   },
 
-  async updateUserPrompt(username, newPrompt, token) {
+  async updateUserPrompt(newPrompt, token) {
     const response = await fetch(`${API_BASE_URL}/user/updateUserPrompt`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ newPrompt, username }),
+      body: JSON.stringify({ newPrompt }),
     });
 
     const data = await response.json();
