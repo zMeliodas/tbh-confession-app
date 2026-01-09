@@ -11,6 +11,7 @@ const RegisterPage = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  
   const [registerCredentials, setRegisterCredentials] = useState({
     username: "",
     password: "",

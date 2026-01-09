@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import InputField from "../../common/InputField";
+import CustomSpinner from "src/Components/common/CustomSpinner";
 import CustomButtonPurple from "../../common/CustomButtonPurple";
 import CustomButtonGray from "../../common/CustomButtonGray";
 import { userApi } from "../../../services/userApi";
@@ -149,7 +150,11 @@ const GeneralSettings = () => {
           disabled={!hasChanges}
           text={
             <div className="flex items-center justify-center gap-1">
-              <FaCheck className="w-4 h-4 pr-1" />
+              {isLoading ? (
+                <CustomSpinner color="color-white/50" />
+              ) : (
+                <FaCheck className="w-4 h-4 pr-1" />
+              )}
               <span>Save Changes</span>
             </div>
           }
