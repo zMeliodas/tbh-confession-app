@@ -75,17 +75,30 @@ async function updatePrompt(userId, newPrompt) {
   };
 }
 
-async function message(senderId, receiverId, content) {
+async function confession(senderId, receiverUsername, content) {
+  const receiverResult = await pool.query(
+    "SELECT user_id FROM users WHERE user_name = $1",
+    [receiverUsername]
+  );
+
+  if (receiverResult.rowCount === 0) {
+    throw new Error("Recipient username not found");
+  }
+
+  const receiverId = receiverResult.rows[0].user_id;
+
   const result = await pool.query(
-    "INSERT INTO messages (sender_id, receiver_id, content) VALUES ($1, $2, $3) RETURNING receiver_id, content",
+    `INSERT INTO messages (sender_id, receiver_id, content)
+     VALUES ($1, $2, $3)
+     RETURNING message_id, created_at, content`,
     [senderId, receiverId, content]
   );
 
   return {
     success: true,
-    message: "Message created successfully",
-    messageData: result.rows[0],
+    message: "Confession sent",
+    data: result.rows[0],
   };
 }
 
-export { deleteUserAccount, updateUser, updatePrompt, getUserById, message };
+export { deleteUserAccount, updateUser, updatePrompt, getUserById, confession };

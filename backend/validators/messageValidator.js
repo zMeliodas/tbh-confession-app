@@ -1,10 +1,17 @@
 export const validateCreateAMessage = (req, res, next) => {
-  let { senderId, receiverId, content } = req.body;
+  let { receiver, content } = req.body;
 
-  if (!senderId || !receiverId || !content?.trim()) {
-    return res.status(404).json({
+  if (!receiver || !content || content.trim().length === 0) {
+    return res.status(400).json({
       success: false,
-      error: "Sender, receiver, and content are required",
+      error: "Invalid message data",
+    });
+  }
+
+  if (content.length > 500) {
+    return res.status(400).json({
+      success: false,
+      error: "Message too long",
     });
   }
 

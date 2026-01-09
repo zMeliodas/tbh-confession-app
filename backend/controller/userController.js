@@ -2,7 +2,7 @@ import {
   deleteUserAccount,
   updateUser,
   updatePrompt,
-  message,
+  confession,
 } from "../services/userService.js";
 
 async function deleteUser(req, res) {
@@ -83,11 +83,12 @@ async function updateUserPrompt(req, res) {
   }
 }
 
-async function createMessage(req, res) {
+async function sendConfession(req, res) {
   try {
-    const { senderId, receiverId, content } = req.body;
+    const userId = req.user.id;
+    const { receiver, content } = req.body;
 
-    const result = await message(senderId, receiverId, content);
+    const result = await confession(userId, receiver, content);
 
     if (!result.success) {
       return res.status(400).json({
@@ -99,7 +100,7 @@ async function createMessage(req, res) {
     res.status(201).json({
       success: true,
       message: result.message,
-      messageData: result.messageData,
+      data: result.data,
     });
   } catch (error) {
     res.status(500).json({
@@ -109,4 +110,4 @@ async function createMessage(req, res) {
   }
 }
 
-export { deleteUser, updateUserName, updateUserPrompt, createMessage };
+export { deleteUser, updateUserName, updateUserPrompt, sendConfession };

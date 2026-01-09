@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authorizeUser } from "../middleware/authorizeUser.js";
-import { createMessage } from "../controller/userController.js";
+import { sendConfession } from "../controller/userController.js";
 import { deleteUser } from "../controller/userController.js";
 import { updateUserName } from "../controller/userController.js";
 import { updateUserPrompt } from "../controller/userController.js";
@@ -10,7 +10,7 @@ import { validateCreateAMessage } from "../validators/messageValidator.js";
 
 const router = Router();
 
-router.post("/createMessage", authorizeUser, validateCreateAMessage, createMessage);
+router.post("/sendConfession", authorizeUser, validateCreateAMessage, sendConfession);
 
 router.delete("/deleteUser", authorizeUser, deleteUser);
 

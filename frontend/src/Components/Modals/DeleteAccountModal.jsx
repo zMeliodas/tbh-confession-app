@@ -9,6 +9,16 @@ const DeleteAccountModal = ({ onClose }) => {
   const [confirmationText, setConfirmationText] = useState("");
   const isDisabled = confirmationText !== "delete my account";
 
+  const handleDeleteAccount = async () => {
+    try {
+      await userApi.deleteUser(token);
+      logout();
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="fixed flex h-full w-full justify-center content-center items-center bg-black/50 transition p-4 z-10">
       <div className="bg-cardBg flex flex-col p-4 justify-start content-start items-start border rounded-xl border-borderColor">
@@ -43,15 +53,7 @@ const DeleteAccountModal = ({ onClose }) => {
         />
 
         <button
-          onClick={async () => {
-            try {
-              await userApi.deleteUser(token);
-              logout();
-              onClose();
-            } catch (error) {
-              console.log(error);
-            }
-          }}
+          onClick={handleDeleteAccount}
           className={`text-sm font-medium font-mulish border w-full p-2 mt-4 border-borderColor rounded-xl  ${
             isDisabled
               ? "bg-greyButton/50 text-primaryTextColor/60 cursor-not-allowed"
