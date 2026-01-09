@@ -12,10 +12,28 @@ const GeneralSettings = () => {
   const { user, token, updateUser } = useAuth();
   const [newUserName, setNewUserName] = useState(user.user_name);
   const [newPrompt, setNewPrompt] = useState(user.user_prompt || "");
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSaveChanges = async () => {
+    if (
+      !newUserName ||
+      newUserName.trim().length < 3 ||
+      newUserName.trim().length > 30
+    ) {
+      setError("Username is required and must be between 3 and 30 characters");
+      return;
+    }
+
+    if (newPrompt.trim().length > 500) {
+      setError("Prompt must be less than 500 characters");
+      return;
+    }
+
     setIsLoading(true);
+    setError(null);
+    setSuccess(null);
 
     try {
       const updates = {};
@@ -41,10 +59,18 @@ const GeneralSettings = () => {
 
       if (Object.keys(updates).length > 0) {
         updateUser(updates);
+        setSuccess("Profile updated successfully!");
+
+        setTimeout(() => setSuccess(null), 3000);
       }
     } catch (error) {
-      console.error("Update failed:", error);
-      // SHOW VISIBLE ERROR HERE
+      if (error.response?.data?.error) {
+        setError(error.response.data.error);
+      } else if (error.message) {
+        setError(error.message);
+      } else {
+        setError("Failed to update profile. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -86,6 +112,7 @@ const GeneralSettings = () => {
         value={newUserName}
         onChange={(e) => {
           setNewUserName(e.target.value);
+          setError(null);
         }}
         required
       />
@@ -97,12 +124,25 @@ const GeneralSettings = () => {
         value={newPrompt}
         onChange={(e) => {
           setNewPrompt(e.target.value);
+          setError(null);
         }}
         paddingBottom="pb-30"
         isTextarea
       />
 
-      <div className="flex flex-row-reverse mt-6">
+      {error && (
+        <div className="w-76 sm:w-96 md:w-108 text-red-700 p-2">
+          <span className="block sm:inline">{error}</span>
+        </div>
+      )}
+
+      {success && (
+        <div className="w-76 sm:w-96 md:w-108 text-green-300 pt-2">
+          <span className="block sm:inline">{success}</span>
+        </div>
+      )}
+
+      <div className="flex flex-row-reverse mt-4">
         <CustomButtonPurple
           textSize="text-xs"
           padding="p-2"

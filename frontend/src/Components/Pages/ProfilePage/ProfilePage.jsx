@@ -13,7 +13,6 @@ const ProfilePage = () => {
     <div className="bg-backgroundColor text-primaryTextColor flex flex-col items-center pt-24 min-h-screen">
       <div className="bg-cardBg flex flex-col py-4 px-4 mb-8 mx-8 w-88 justify-center items-center content-center border rounded-xl border-borderColor sm:w-xl md:w-3xl lg:w-5xl">
         <div className="flex flex-col items-center space-y-4">
-  
           <CustomProfilePic
             userImage={user.image}
             src={user.image}
@@ -36,7 +35,7 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        <div className="flex mt-4 mb-4 border-b border-borderColor">
+        <div className="flex mt-4 mb-2 border-b border-borderColor">
           <CustomTabButton
             width="w-28 md:w-46"
             textSize="text-sm md:text-md"
@@ -53,11 +52,9 @@ const ProfilePage = () => {
           />
         </div>
 
-        <div className="flex flex-col gap-2 justify-center">
-          <CustomReceivedMessageCard content="HI NIGGAS" />
-        </div>
+        <CustomReceivedMessageCard content="HAHAHAHA" />
 
-        <div className="mt-6 text-offWhite text-center">
+        <div className="mt-2 text-offWhite text-center">
           <Activity mode={activeTab === "received" ? "visible" : "hidden"}>
             <p className="text-primaryTextColor font-mulish">
               No received messages yet.

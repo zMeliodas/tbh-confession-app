@@ -31,7 +31,7 @@ const InputField = ({
         <textarea
           className="w-full h-32 mt-0.5 bg-textFieldBg text-primaryTextColor text-md rounded-md
              p-2 resize-none outline-none
-             focus:ring-2 focus:ring-purple"
+             focus:ring-2 focus:ring-purple overflow-y-auto custom-scroll"
           value={value}
           onChange={handleChange}
         />
