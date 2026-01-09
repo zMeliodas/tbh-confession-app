@@ -101,4 +101,46 @@ async function confession(senderId, receiverUsername, content) {
   };
 }
 
-export { deleteUserAccount, updateUser, updatePrompt, getUserById, confession };
+async function getReceivedConfessionsById(userId) {
+  const result = await pool.query(
+    `SELECT message_id, content, created_at 
+     FROM messages 
+     WHERE receiver_id = $1
+     ORDER BY created_at DESC`,
+    [userId]
+  );
+
+  return {
+    success: true,
+    message:
+      result.rowCount === 0 ? "No received messages yet." : "Messages retrieved",
+    data: result.rows,
+  };
+}
+
+async function getSentConfessionsById(userId) {
+  const result = await pool.query(
+    `SELECT message_id, content, created_at 
+     FROM messages 
+     WHERE sender_id = $1
+     ORDER BY created_at DESC`,
+    [userId]
+  );
+
+  return {
+    success: true,
+    message:
+      result.rowCount === 0 ? "No sent messages yet." : "Messages retrieved",
+    data: result.rows,
+  };
+}
+
+export {
+  deleteUserAccount,
+  updateUser,
+  updatePrompt,
+  getUserById,
+  confession,
+  getReceivedConfessionsById,
+  getSentConfessionsById,
+};
