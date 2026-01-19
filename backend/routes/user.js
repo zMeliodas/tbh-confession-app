@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authorizeUser } from "../middleware/authorizeUser.js";
 import {
   getReceivedConfessions,
+  getRecipient,
   getSentConfessions,
   sendConfession,
 } from "../controller/userController.js";
@@ -16,6 +17,7 @@ const router = Router();
 
 router.get("/confession/sent", authorizeUser, getSentConfessions);
 router.get("/confession/received", authorizeUser, getReceivedConfessions);
+router.post("/confession/getRecipient", authorizeUser, getRecipient);
 
 router.post(
   "/confession",

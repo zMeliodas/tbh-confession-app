@@ -3,7 +3,7 @@ import { TbMessage2Plus } from "react-icons/tb";
 import { RiImageAddLine } from "react-icons/ri";
 import { MdOutlineDelete } from "react-icons/md";
 
-const CustomReceivedMessageCard = ({ content }) => {
+const CustomReceivedMessageCard = ({ content, createdAt }) => {
   return (
     <div className="flex flex-col gap-2 justify-center">
       <div
@@ -17,7 +17,7 @@ const CustomReceivedMessageCard = ({ content }) => {
           </span>
         </div>
 
-        <div className="bg-backgroundColor rounded-lg p-4 mt-2">
+        <div className="bg-backgroundColor flex-col rounded-lg p-4 mt-2">
           <span
             className={`text-textFieldColor text-sm sm:text-base md:text-lg font-mulish  wrap-break-words`}
           >
@@ -25,19 +25,27 @@ const CustomReceivedMessageCard = ({ content }) => {
           </span>
         </div>
 
-        <div className="flex flex-row-reverse p-2 gap-2">
-          <TbMessage2Plus
-            title="Request Whisper"
-            className="w-6 h-6 cursor-pointer text-offWhite duration-200 ease-in-out select-none hover:scale-110"
-          />
-          <RiImageAddLine
-            title="Save image"
-            className="w-6 h-6 cursor-pointer text-offWhite duration-200 ease-in-out select-none hover:scale-110"
-          />
-          <MdOutlineDelete
-            title="Delete Message"
-            className="w-6 h-6 cursor-pointer text-offWhite duration-200 ease-in-out select-none hover:scale-110"
-          />
+        <div className="flex flex-row-reverse py-2 justify-between">
+          <div className="flex gap-2">
+            <TbMessage2Plus
+              title="Request Whisper"
+              className="w-6 h-6 cursor-pointer text-offWhite duration-200 ease-in-out select-none hover:scale-110"
+            />
+            <RiImageAddLine
+              title="Save image"
+              className="w-6 h-6 cursor-pointer text-offWhite duration-200 ease-in-out select-none hover:scale-110"
+            />
+            <MdOutlineDelete
+              title="Delete Message"
+              className="w-6 h-6 cursor-pointer text-offWhite duration-200 ease-in-out select-none hover:scale-110"
+            />
+          </div>
+
+          <span
+            className={`text-textFieldColor text-sm font-mulish wrap-break-words`}
+          >
+            {createdAt}
+          </span>
         </div>
       </div>
     </div>

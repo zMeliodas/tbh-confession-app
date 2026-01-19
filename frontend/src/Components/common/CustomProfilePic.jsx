@@ -1,5 +1,5 @@
 import React from "react";
-import { getInitials } from "../../utils/getInitials";
+import { getInitials } from "../../utils/stringUtils";
 
 const CustomProfilePic = ({
   username,

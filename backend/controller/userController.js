@@ -5,6 +5,7 @@ import {
   confession,
   getSentConfessionsById,
   getReceivedConfessionsById,
+  getUserByUsername,
 } from "../services/userService.js";
 
 async function deleteUser(req, res) {
@@ -150,4 +151,39 @@ async function getReceivedConfessions(req, res) {
   }
 }
 
-export { deleteUser, updateUserName, updateUserPrompt, sendConfession, getReceivedConfessions, getSentConfessions };
+async function getRecipient(req, res) {
+  try {
+    const { username } = req.body;
+    const currentUserId = req.user.id;
+
+    const result = await getUserByUsername(username, currentUserId);
+
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        message: result.message,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: result.message,
+      data: result.data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
+  }
+}
+
+export {
+  deleteUser,
+  updateUserName,
+  updateUserPrompt,
+  sendConfession,
+  getReceivedConfessions,
+  getSentConfessions,
+  getRecipient,
+};

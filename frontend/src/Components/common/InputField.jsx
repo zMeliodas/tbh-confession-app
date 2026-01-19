@@ -13,6 +13,7 @@ const InputField = ({
   value,
   isTextarea = false,
 }) => {
+  
   const handleChange = (e) => {
     if (onChange) {
       onChange(e);

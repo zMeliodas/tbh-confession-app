@@ -1,13 +1,47 @@
-import { useState, Activity } from "react";
+import { useState, Activity, useEffect } from "react";
 import { IoLinkSharp } from "react-icons/io5";
 import CustomTabButton from "src/Components/common/CustomTabButton";
 import CustomReceivedMessageCard from "src/Components/common/CustomReceivedMessageCard";
 import { useAuth } from "../../../providers/AuthProvider";
 import CustomProfilePic from "../../common/CustomProfilePic.jsx";
+import { userApi } from "../../../services/userApi.js";
+import CustomSentMessageCard from "../../common/CustomSentMessageCard.jsx";
+import { formatDate } from "../../../utils/stringUtils.js";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("received");
-  const { user } = useAuth();
+  const [sentConfessions, setSentConfessions] = useState([]);
+  const [receivedConfessions, setReceivedConfessions] = useState([]);
+  const [sentStatus, setSentStatus] = useState("");
+  const [receivedStatus, setReceivedStatus] = useState("");
+
+  const { user, token } = useAuth();
+
+  const getSentConfessions = async () => {
+    try {
+      const result = await userApi.getSentConfessions(token);
+      console.log(result.data);
+      setSentConfessions(result.data);
+      setSentStatus(result.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getReceivedConfessions = async () => {
+    try {
+      const result = await userApi.getReceivedConfessions(token);
+      setReceivedConfessions(result.data);
+      setReceivedStatus(result.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSentConfessions();
+    getReceivedConfessions();
+  }, []);
 
   return (
     <div className="bg-backgroundColor text-primaryTextColor flex flex-col items-center pt-24 min-h-screen">
@@ -52,19 +86,35 @@ const ProfilePage = () => {
           />
         </div>
 
-        <CustomReceivedMessageCard content="HAHAHAHA" />
-
         <div className="mt-2 text-offWhite text-center">
           <Activity mode={activeTab === "received" ? "visible" : "hidden"}>
-            <p className="text-primaryTextColor font-mulish">
-              No received messages yet.
-            </p>
+            {!receivedConfessions ? (
+              <p className="text-primaryTextColor font-mulish">
+                {receivedStatus}
+              </p>
+            ) : (
+              receivedConfessions.map((confession) => (
+                <CustomReceivedMessageCard
+                  key={confession.message_id}
+                  content={confession.content}
+                  createdAt={formatDate(confession.created_at)}
+                />
+              ))
+            )}
           </Activity>
 
           <Activity mode={activeTab === "sent" ? "visible" : "hidden"}>
-            <p className="text-primaryTextColor font-mulish">
-              No sent messages yet.
-            </p>
+            {!sentConfessions ? (
+              <p className="text-primaryTextColor font-mulish">{sentStatus}</p>
+            ) : (
+              sentConfessions.map((confession) => (
+                <CustomSentMessageCard
+                  key={confession.message_id}
+                  content={confession.content}
+                  createdAt={formatDate(confession.created_at)}
+                />
+              ))
+            )}
           </Activity>
         </div>
       </div>

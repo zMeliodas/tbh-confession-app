@@ -18,7 +18,7 @@ async function deleteUserAccount(userId) {
 async function getUserById(userId) {
   const result = await pool.query(
     "SELECT user_id, user_name, user_prompt FROM users WHERE user_id = $1",
-    [userId]
+    [userId],
   );
 
   if (result.rows.length === 0) {
@@ -32,11 +32,38 @@ async function getUserById(userId) {
   };
 }
 
+async function getUserByUsername(username, currentUserId) {
+  const result = await pool.query(
+    "SELECT user_id, user_name, user_prompt FROM users WHERE user_name = $1",
+    [username],
+  );
+
+  if (result.rows.length === 0) {
+    return {
+      success: false,
+      message: "User not found",
+    };
+  }
+
+  if (result.rows[0].user_id === currentUserId) {
+    return {
+      success: false,
+      message: "You cannot send a message to yourself",
+    };
+  }
+
+  return {
+    success: true,
+    message: "User fetched successfully",
+    data: result.rows[0],
+  };
+}
+
 async function updateUser(userId, newUserName) {
   try {
     const result = await pool.query(
       "UPDATE users SET user_name = $1 WHERE user_id = $2 RETURNING *",
-      [newUserName, userId]
+      [newUserName, userId],
     );
 
     if (result.rowCount === 0) {
@@ -61,7 +88,7 @@ async function updateUser(userId, newUserName) {
 async function updatePrompt(userId, newPrompt) {
   const result = await pool.query(
     "UPDATE users SET user_prompt = $1 WHERE user_id = $2 RETURNING *",
-    [newPrompt, userId]
+    [newPrompt, userId],
   );
 
   if (result.rowCount === 0) {
@@ -78,7 +105,7 @@ async function updatePrompt(userId, newPrompt) {
 async function confession(senderId, receiverUsername, content) {
   const receiverResult = await pool.query(
     "SELECT user_id FROM users WHERE user_name = $1",
-    [receiverUsername]
+    [receiverUsername],
   );
 
   if (receiverResult.rowCount === 0) {
@@ -91,7 +118,7 @@ async function confession(senderId, receiverUsername, content) {
     `INSERT INTO messages (sender_id, receiver_id, content)
      VALUES ($1, $2, $3)
      RETURNING message_id, created_at, content`,
-    [senderId, receiverId, content]
+    [senderId, receiverId, content],
   );
 
   return {
@@ -107,13 +134,20 @@ async function getReceivedConfessionsById(userId) {
      FROM messages 
      WHERE receiver_id = $1
      ORDER BY created_at DESC`,
-    [userId]
+    [userId],
   );
+
+  if (result.rowCount === 0) {
+    return {
+      success: true,
+      message: "No received messages yet.",
+      data: null,
+    };
+  }
 
   return {
     success: true,
-    message:
-      result.rowCount === 0 ? "No received messages yet." : "Messages retrieved",
+    message: "Messages retrieved",
     data: result.rows,
   };
 }
@@ -124,13 +158,20 @@ async function getSentConfessionsById(userId) {
      FROM messages 
      WHERE sender_id = $1
      ORDER BY created_at DESC`,
-    [userId]
+    [userId],
   );
+
+  if (result.rowCount === 0) {
+    return {
+      success: true,
+      message: "No sent messages yet.",
+      data: null,
+    };
+  }
 
   return {
     success: true,
-    message:
-      result.rowCount === 0 ? "No sent messages yet." : "Messages retrieved",
+    message: "Messages retrieved",
     data: result.rows,
   };
 }
@@ -143,4 +184,5 @@ export {
   confession,
   getReceivedConfessionsById,
   getSentConfessionsById,
+  getUserByUsername,
 };
