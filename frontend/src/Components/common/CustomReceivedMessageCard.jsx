@@ -7,7 +7,7 @@ const CustomReceivedMessageCard = ({ content, createdAt }) => {
   return (
     <div className="flex flex-col gap-2 justify-center">
       <div
-        className={`bg-purple flex flex-col p-4 pb-1 border rounded-lg w-72 sm:w-lg md:w-2xl border-borderColor`}
+        className={`bg-purple flex flex-col p-4 pb-1 mb-2 border rounded-lg w-72 sm:w-lg md:w-2xl border-borderColor`}
       >
         <div className="flex justify-center font-black">
           <span
@@ -19,7 +19,7 @@ const CustomReceivedMessageCard = ({ content, createdAt }) => {
 
         <div className="bg-backgroundColor flex-col rounded-lg p-4 mt-2">
           <span
-            className={`text-textFieldColor text-sm sm:text-base md:text-lg font-mulish  wrap-break-words`}
+            className={`text-primaryTextColor text-sm sm:text-base md:text-lg font-mulish wrap-break-words`}
           >
             {content}
           </span>

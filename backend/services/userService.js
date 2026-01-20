@@ -154,10 +154,11 @@ async function getReceivedConfessionsById(userId) {
 
 async function getSentConfessionsById(userId) {
   const result = await pool.query(
-    `SELECT message_id, content, created_at 
-     FROM messages 
-     WHERE sender_id = $1
-     ORDER BY created_at DESC`,
+    `SELECT m.message_id, m.receiver_id, m.content, m.created_at, u.user_name
+     FROM messages m
+     JOIN users u ON m.receiver_id = u.user_id
+     WHERE m.sender_id = $1
+     ORDER BY m.created_at DESC`,
     [userId],
   );
 

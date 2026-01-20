@@ -20,7 +20,6 @@ const ProfilePage = () => {
   const getSentConfessions = async () => {
     try {
       const result = await userApi.getSentConfessions(token);
-      console.log(result.data);
       setSentConfessions(result.data);
       setSentStatus(result.message);
     } catch (error) {
@@ -112,6 +111,7 @@ const ProfilePage = () => {
                   key={confession.message_id}
                   content={confession.content}
                   createdAt={formatDate(confession.created_at)}
+                  recipient={confession.user_name}
                 />
               ))
             )}

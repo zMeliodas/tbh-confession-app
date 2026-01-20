@@ -11,6 +11,7 @@ import WhisperPage from "./Components/Pages/WhisperPage/WhisperPage";
 import SettingsPage from "./Components/Pages/SettingsPage/SettingsPage";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import DeleteAccountModal from "./Components/Modals/DeleteAccountModal";
+import PageNotFound from "./Components/Pages/PageNotFound/PageNotFound"
 
 const App = () => {
   const [showShareLinkModal, setShowShareLinkModal] = useState(false);
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/pagenotfound" element={<PageNotFound />} />
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/confess" element={<ConfessionPage />} />
