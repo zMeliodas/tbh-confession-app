@@ -4,7 +4,7 @@ import { MdOutlineDelete } from "react-icons/md";
 
 const CustomSentMessageCard = ({ content, createdAt, recipient }) => {
   return (
-    <div className="bg-purple flex flex-col p-4 py-2 mb-2 w-2xl max-w-2xl border rounded-lg border-borderColor">
+    <div className="bg-purple flex flex-col p-4 py-2 mb-2 w-72 sm:w-lg md:w-2xl border rounded-lg border-borderColor">
       <div className="flex flex-row justify-between">
         <p className="font-mulish font-semibold">to: {recipient}</p>
         <p className="font-mulish font-semibold">tbh</p>
