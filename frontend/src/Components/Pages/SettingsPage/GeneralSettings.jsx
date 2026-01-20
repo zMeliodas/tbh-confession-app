@@ -129,6 +129,7 @@ const GeneralSettings = () => {
         }}
         paddingBottom="pb-30"
         isTextarea
+        required
       />
 
       {error && (

@@ -17,7 +17,7 @@ const CustomProfilePic = ({
     />
   ) : (
     <div
-      className={`${baseSize} ${smSize} ${mdSize} ${textSize} rounded-full bg-purple text-primaryTextColor flex items-center justify-center font-semibold select-none`}
+      className={`${baseSize} ${smSize} ${mdSize} ${textSize} rounded-full bg-purple text-offWhite flex items-center justify-center font-semibold select-none`}
     >
       {getInitials(username)}
     </div>

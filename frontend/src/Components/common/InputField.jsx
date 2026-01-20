@@ -54,7 +54,7 @@ const InputField = ({
         placeholder={placeholderText}
         onChange={handleChange}
         value={value}
-        className={`text-sm text-primaryTextColor bg-textFieldBg placeholder:text-secondaryTextColor font-mulish font-light border border-borderColor rounded-md p-2 mt-0.5 h-10 ${width} outline-none focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-purple`}
+        className={`text-sm text-primaryTextColor bg-textFieldBg placeholder:text-secondaryTextColor font-mulish border border-borderColor rounded-md p-2 mt-0.5 h-10 ${width} outline-none focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-purple`}
       />
     </>
   );
