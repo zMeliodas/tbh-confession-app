@@ -8,8 +8,8 @@ The project focuses on recreating the visual layout and user interface of the si
 
 🎯 Purpose
 
-Practice cloning a real-world website UI
-Improve HTML, CSS, and JavaScript skills
-Learn layout structure, spacing, and typography
-Practice responsive and mobile-first design
-This project does not aim to replicate the full functionality or backend behavior of umamin.link.
+- Practice cloning a real-world website UI
+- Improve HTML, CSS, and JavaScript skills
+- Learn layout structure, spacing, and typography
+- Practice responsive and mobile-first design
+- This project does not aim to replicate the full functionality or backend behavior of umamin.link.
