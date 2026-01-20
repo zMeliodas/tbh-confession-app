@@ -36,7 +36,6 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/pagenotfound" element={<PageNotFound />} />
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/confess" element={<ConfessionPage />} />
@@ -52,6 +51,8 @@ const App = () => {
               }
             />
           </Route>
+
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
     </>
