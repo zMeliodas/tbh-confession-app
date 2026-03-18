@@ -2,13 +2,13 @@ import InputField from "src/Components/common/InputField";
 import CustomButtonGray from "src/Components/common/CustomButtonGray";
 import CustomButtonPurple from "src/Components/common/CustomButtonPurple";
 import CustomSpinner from "src/Components/common/CustomSpinner";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "src/providers/AuthProvider";
 import { handleEnterPress } from "../../../utils/handleEnterPress";
 
 const RegisterPage = () => {
-  const { register } = useAuth();
+  const { register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   
@@ -84,6 +84,10 @@ const RegisterPage = () => {
       }
     }
   };
+
+  if (isAuthenticated) {
+    return <Navigate to="/profile" replace />;
+  }
 
   return (
     <main className="bg-backgroundColor flex flex-col items-center h-screen pt-24 overflow-auto">

@@ -3,12 +3,12 @@ import InputField from "../../common/InputField";
 import CustomButtonPurple from "../../common/CustomButtonPurple";
 import CustomButtonGray from "../../common/CustomButtonGray";
 import CustomSpinner from "../../common/CustomSpinner";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "../../../providers/AuthProvider";
 import { handleEnterPress } from "../../../utils/handleEnterPress";
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [loginCredentials, setLoginCredentials] = useState({
@@ -21,6 +21,10 @@ const LoginPage = () => {
     password: "",
     invalid: "",
   });
+
+  if (isAuthenticated) {
+    return <Navigate to="/profile" replace />;
+  }
 
   const handleInputChange = (field) => (e) => {
     setLoginCredentials({
@@ -60,7 +64,7 @@ const LoginPage = () => {
       setIsLoading(true);
       await login(
         loginCredentials.username.trim(),
-        loginCredentials.password.trim()
+        loginCredentials.password.trim(),
       );
       navigate("/profile", { replace: true });
     } catch (error) {

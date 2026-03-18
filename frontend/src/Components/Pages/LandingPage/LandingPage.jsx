@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import CustomButtonPurple from "src/Components/common/CustomButtonPurple";
 import CustomButtonGray from "src/Components/common/CustomButtonGray";
 import { FiGithub } from "react-icons/fi";
+import { useAuth } from "src/providers/AuthProvider";
 
 const LandingPage = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <main className="bg-backgroundColor h-screen flex flex-col items-center justify-center pt-24 overflow-auto">
       <h1 className="text-primaryTextColor text-center text-4xl sm:text-6xl md:text-7xl lg:text-8xl w-full font-mulish font-extrabold tracking-tighter">
@@ -14,7 +17,7 @@ const LandingPage = () => {
         messages.
       </p>
       <div className="flex items-center justify-evenly content-center gap-2 mt-8">
-        <Link to={"/login"}>
+        <Link to={isAuthenticated ? "/profile" : "/login"}>
           <CustomButtonPurple
             padding="p-2"
             paddingTop="pt-3"
