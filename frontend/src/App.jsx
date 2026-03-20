@@ -11,7 +11,7 @@ import WhisperPage from "./Components/Pages/WhisperPage/WhisperPage";
 import SettingsPage from "./Components/Pages/SettingsPage/SettingsPage";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import DeleteAccountModal from "./Components/Modals/DeleteAccountModal";
-import PageNotFound from "./Components/Pages/PageNotFound/PageNotFound"
+import PageNotFound from "./Components/Pages/PageNotFound/PageNotFound";
 
 const App = () => {
   const [showShareLinkModal, setShowShareLinkModal] = useState(false);
@@ -21,16 +21,16 @@ const App = () => {
     <>
       <Router>
         <Navbar onShareLinkClick={() => setShowShareLinkModal(true)} />
-        
-        {showDeleteAccountModal && (
-          <DeleteAccountModal
-            onClose={() => setShowDeleteAccountModal(false)}
-          />
-        )}
 
-        <Activity mode={showShareLinkModal ? "visible" : "hidden"}>
-          <ShareLinkModal onClose={() => setShowShareLinkModal(false)} />
-        </Activity>
+        <DeleteAccountModal
+          isOpen={showDeleteAccountModal}
+          onClose={() => setShowDeleteAccountModal(false)}
+        />
+
+        <ShareLinkModal
+          isOpen={showShareLinkModal}
+          onClose={() => setShowShareLinkModal(false)}
+        />
 
         <Routes>
           <Route path="/" element={<LandingPage />} />
