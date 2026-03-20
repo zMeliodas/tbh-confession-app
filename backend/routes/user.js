@@ -17,7 +17,11 @@ const router = Router();
 
 router.get("/confession/sent", authorizeUser, getSentConfessions);
 router.get("/confession/received", authorizeUser, getReceivedConfessions);
-router.post("/confession/getRecipient", authorizeUser, getRecipient);
+router.get(
+  "/confession/:username",
+  authorizeUser,
+  getRecipient
+);
 
 router.post(
   "/confession",

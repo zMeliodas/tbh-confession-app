@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const [receivedConfessions, setReceivedConfessions] = useState([]);
   const [sentStatus, setSentStatus] = useState("");
   const [receivedStatus, setReceivedStatus] = useState("");
-
+  const [copied, setCopied] = useState(false);
   const { user, token } = useAuth();
 
   const getSentConfessions = async () => {
@@ -35,6 +35,13 @@ const ProfilePage = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleCopyLink = () => {
+    const link = `${window.location.origin}/confess/${user.user_name}`;
+    navigator.clipboard.writeText(link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   useEffect(() => {
@@ -60,10 +67,13 @@ const ProfilePage = () => {
             @{user.user_name}
           </h2>
 
-          <div className="bg-linkContainer px-2 py-1 md:px-4 md:py-2 rounded-lg flex items-center gap-1 cursor-pointer select-none hover:bg-purpleHover transition-colors duration-200">
+          <div
+            onClick={handleCopyLink}
+            className="bg-linkContainer px-2 py-1 md:px-4 md:py-2 rounded-lg flex items-center gap-1 cursor-pointer select-none hover:bg-purpleHover transition-colors duration-200"
+          >
             <IoLinkSharp className="pt-1 w-5 h-5" />
-            <span className="text-primaryTextColor text-xs md:text-sm font-mulish">
-              www.tbh.link/{user.user_name}
+            <span className="text-primaryTextColor text-xs md:text-sm font-mulish font-semibold">
+              {copied ? "Copied!" : `link/${user.user_name}`}
             </span>
           </div>
         </div>

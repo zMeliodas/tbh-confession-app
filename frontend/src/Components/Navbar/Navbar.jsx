@@ -47,7 +47,7 @@ const Navbar = ({ onShareLinkClick }) => {
             </NavButton>
           </Link>
 
-          <Link to={isAuthenticated ? "/confess" : "/login"}>
+          <Link to={isAuthenticated ? "/confess/" : "/login"}>
             <NavButton rounded="rounded-xl" width="w-26" height="h-20" title="Confess">
               <TbMessage2Heart className="w-8 h-8" />
             </NavButton>
@@ -95,7 +95,7 @@ const Navbar = ({ onShareLinkClick }) => {
             </NavButton>
           </Link>
 
-          <Link to={isAuthenticated ? "/confess" : "/login"}>
+          <Link to={isAuthenticated ? "/confess/" : "/login"}>
             <NavButton
               rounded="rounded-3xl"
               width="w-18 sm:w-28"

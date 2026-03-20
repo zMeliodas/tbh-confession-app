@@ -153,7 +153,7 @@ async function getReceivedConfessions(req, res) {
 
 async function getRecipient(req, res) {
   try {
-    const { username } = req.body;
+    const { username } = req.params;
     const currentUserId = req.user.id;
 
     const result = await getUserByUsername(username, currentUserId);

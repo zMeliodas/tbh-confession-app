@@ -5,10 +5,12 @@ import CustomChatBubble from "./CustomChatBubble";
 import { useAuth } from "../../providers/AuthProvider";
 import { userApi } from "../../services/userApi";
 import CustomProfilePic from "./CustomProfilePic";
+import { useParams } from "react-router-dom";
 
 const CustomSendAMessageCard = () => {
+  const { username } = useParams();
   const [message, setMessage] = useState("");
-  const [recipient, setRecipient] = useState("type your recipient here");
+  const [recipient, setRecipient] = useState("");
   const [recipientData, setRecipientData] = useState({
     user_name: "X",
     user_prompt: "No user selected",
@@ -25,6 +27,13 @@ const CustomSendAMessageCard = () => {
   };
 
   useEffect(() => {
+    if (username) {
+      setRecipient(username);
+      getRecipient(username);
+    }
+  }, []);
+
+  useEffect(() => {
     if (isEditingRecipient && inputRef.current) {
       inputRef.current.focus();
       inputRef.current.select();
@@ -32,6 +41,7 @@ const CustomSendAMessageCard = () => {
   }, [isEditingRecipient]);
 
   const getRecipient = async (recipient) => {
+    console.log("getRecipient called with:", recipient);
     if (!recipient || recipient.length < 3) {
       setRecipientData(DEFAULT_RECIPIENT_DATA);
       return;
@@ -68,7 +78,7 @@ const CustomSendAMessageCard = () => {
   const handleRecipientSubmit = () => {
     const trimmedRecipient = recipient.trim();
 
-    if (trimmedRecipient && trimmedRecipient !== "type your recipient here") {
+    if (trimmedRecipient && trimmedRecipient.length >= 3) {
       getRecipient(trimmedRecipient);
       setIsEditingRecipient(false);
     } else {
@@ -95,19 +105,17 @@ const CustomSendAMessageCard = () => {
               ref={inputRef}
               type="text"
               value={recipient}
-              onChange={(e) => setRecipient(e.target.value.trim())}
+              onChange={(e) => setRecipient(e.target.value)}
               onBlur={handleRecipientSubmit}
               onKeyDown={handleKeyDown}
               className="bg-purple text-white font-mulish font-bold outline-none border-b border-white px-1 py-1"
             />
           ) : (
             <button
-              onClick={() => {
-                setIsEditingRecipient(true);
-              }}
+              onClick={() => setIsEditingRecipient(true)}
               className="text-white font-mulish font-bold hover:bg-purple py-1 rounded"
             >
-              @{recipient}
+              @{recipient || "type your recipient here"}
             </button>
           )}
           <button>

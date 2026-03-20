@@ -21,14 +21,13 @@ export const userApi = {
 
   async getRecipient(username, token) {
     const response = await fetch(
-      `${API_BASE_URL}/user/confession/getRecipient`,
+      `${API_BASE_URL}/user/confession/${username}`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username }),
       },
     );
 

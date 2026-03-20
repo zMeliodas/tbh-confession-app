@@ -38,7 +38,8 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
 
           <Route element={<ProtectedRoutes />}>
-            <Route path="/confess" element={<ConfessionPage />} />
+            <Route path="/confess/" element={<ConfessionPage />} />
+            <Route path="/confess/:username" element={<ConfessionPage />} />
             <Route path="/whisper" element={<WhisperPage />} />
             <Route path="/profile" element={<ProfilePage />} />
 
