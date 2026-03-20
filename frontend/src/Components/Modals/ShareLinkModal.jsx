@@ -2,9 +2,19 @@ import React, { useState, useEffect } from "react";
 import InputField from "../common/InputField";
 import { FaRegCopy } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
+import { useAuth } from "../../providers/AuthProvider";
 
 const ShareLinkModal = ({ isOpen, onClose }) => {
   const [visible, setVisible] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const { user } = useAuth();
+
+  const handleCopyLink = () => {
+    const link = `${window.location.origin}/confess/${user.user_name}`;
+    navigator.clipboard.writeText(link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -52,11 +62,11 @@ const ShareLinkModal = ({ isOpen, onClose }) => {
         <div className="flex mt-2">
           <InputField
             width="w-68 sm:w-md"
-            placeholderText="link"
             inputType="text"
+            value={copied ? "Copied!" : `${window.location.origin}/confess/${user.user_name}`}
           />
 
-          <button className="flex justify-center bg-purple p-2 w-12 ml-2 rounded-lg hover:bg-purpleHover">
+          <button onClick={handleCopyLink} className="flex justify-center bg-purple p-2 w-12 ml-2 rounded-lg hover:bg-purpleHover">
             <FaRegCopy className="w-6 h-6 text-offWhite" />
           </button>
         </div>

@@ -71,9 +71,9 @@ const ProfilePage = () => {
             onClick={handleCopyLink}
             className="bg-linkContainer px-2 py-1 md:px-4 md:py-2 rounded-lg flex items-center gap-1 cursor-pointer select-none hover:bg-purpleHover transition-colors duration-200"
           >
-            <IoLinkSharp className="pt-1 w-5 h-5" />
+            <IoLinkSharp className="w-4 h-4" />
             <span className="text-primaryTextColor text-xs md:text-sm font-mulish font-semibold">
-              {copied ? "Copied!" : `link/${user.user_name}`}
+              {copied ? "Copied!" : `${window.location.origin}/confess/${user.user_name}`}
             </span>
           </div>
         </div>
