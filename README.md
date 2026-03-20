@@ -1,4 +1,4 @@
-TBH is a web application that lets users share anonymous confessions and thoughts in a safe, judgment-free space. It’s designed to be simple, fast, and honest—no profiles, no pressure, just real thoughts.
+TBH is a web application that lets users share anonymous confessions and thoughts in a safe, judgment-free space. It’s designed to be simple, fast, and honest.
 The UI design is inspired by Umamin.link, and was recreated for learning and development purposes.
 
 ✨ Features
