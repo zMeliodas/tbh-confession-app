@@ -1,4 +1,4 @@
-import { useState, Activity, useEffect } from "react";
+import { useState, Activity, useEffect, useRef } from "react";
 import { IoLinkSharp } from "react-icons/io5";
 import CustomTabButton from "src/Components/common/CustomTabButton";
 import CustomReceivedMessageCard from "src/Components/common/CustomReceivedMessageCard";
@@ -7,6 +7,7 @@ import CustomProfilePic from "../../common/CustomProfilePic.jsx";
 import { userApi } from "../../../services/userApi.js";
 import CustomSentMessageCard from "../../common/CustomSentMessageCard.jsx";
 import { formatDate } from "../../../utils/stringUtils.js";
+import { io } from "socket.io-client";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("received");
@@ -16,6 +17,7 @@ const ProfilePage = () => {
   const [receivedStatus, setReceivedStatus] = useState("");
   const [copied, setCopied] = useState(false);
   const { user, token } = useAuth();
+  const socketRef = useRef(null);
 
   const getSentConfessions = async () => {
     try {
@@ -48,6 +50,22 @@ const ProfilePage = () => {
     getSentConfessions();
     getReceivedConfessions();
   }, []);
+
+  useEffect(() => {
+  socketRef.current = io(import.meta.env.VITE_API_URL);
+  socketRef.current.emit("login", user.user_id);
+
+  socketRef.current.on("newMessage", (msg) => {
+    if (msg.receiverUsername === user.user_name) {
+      setReceivedConfessions(prev => [msg, ...prev]);
+    }
+    if (msg.senderId === user.user_id) {
+      setSentConfessions(prev => [msg, ...prev]);
+    }
+  });
+
+  return () => socketRef.current.disconnect();
+}, [user]);
 
   return (
     <div className="bg-backgroundColor text-primaryTextColor flex flex-col items-center pt-24 min-h-screen">

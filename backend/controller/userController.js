@@ -7,6 +7,7 @@ import {
   getReceivedConfessionsById,
   getUserByUsername,
 } from "../services/userService.js";
+import { io, onlineUsers } from "../server.js";
 
 async function deleteUser(req, res) {
   try {
@@ -97,6 +98,17 @@ async function sendConfession(req, res) {
       return res.status(400).json({
         success: false,
         error: "Error",
+      });
+    }
+
+    const receiverSocketId = onlineUsers.get(String(result.data.receiver_id));
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", {
+        message_id: result.data.message_id,
+        senderId: userId,
+        receiverUsername: receiver,
+        content: result.data.content,
+        created_at: result.data.created_at,
       });
     }
 

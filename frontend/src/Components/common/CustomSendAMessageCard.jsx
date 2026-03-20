@@ -17,6 +17,7 @@ const CustomSendAMessageCard = () => {
     image: null,
   });
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
+  const [sentMessages, setSentMessages] = useState([]);
   const inputRef = useRef(null);
   const { token } = useAuth();
 
@@ -30,6 +31,7 @@ const CustomSendAMessageCard = () => {
     if (username) {
       setRecipient(username);
       getRecipient(username);
+      getSentMessages(username);
     }
   }, []);
 
@@ -40,8 +42,19 @@ const CustomSendAMessageCard = () => {
     }
   }, [isEditingRecipient]);
 
+  const getSentMessages = async (recipientUsername) => {
+    try {
+      const result = await userApi.getSentConfessions(token);
+      const filtered = result.data.filter(
+        (confession) => confession.user_name === recipientUsername,
+      );
+      setSentMessages(filtered);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getRecipient = async (recipient) => {
-    console.log("getRecipient called with:", recipient);
     if (!recipient || recipient.length < 3) {
       setRecipientData(DEFAULT_RECIPIENT_DATA);
       return;
@@ -70,6 +83,7 @@ const CustomSendAMessageCard = () => {
     try {
       await userApi.sendConfession(recipient, message, token);
       setMessage("");
+      getSentMessages(recipient);
     } catch (error) {
       console.log(error);
     }
@@ -80,9 +94,11 @@ const CustomSendAMessageCard = () => {
 
     if (trimmedRecipient && trimmedRecipient.length >= 3) {
       getRecipient(trimmedRecipient);
+      getSentMessages(trimmedRecipient);
       setIsEditingRecipient(false);
     } else {
       setRecipientData(DEFAULT_RECIPIENT_DATA);
+      setSentMessages([]);
       setIsEditingRecipient(false);
     }
   };
@@ -93,6 +109,26 @@ const CustomSendAMessageCard = () => {
     } else if (e.key === "Escape") {
       setIsEditingRecipient(false);
     }
+  };
+
+  const handleShare = () => {
+    const trimmedRecipient = recipient.trim();
+
+    if (!trimmedRecipient) {
+      alert("No recipient to share!");
+      return;
+    }
+
+    const shareUrl = `${window.location.origin}/confess/${trimmedRecipient}`;
+
+    navigator.clipboard
+      .writeText(shareUrl)
+      .then(() => {
+        alert(`Share link copied to clipboard!\n${shareUrl}`);
+      })
+      .catch(() => {
+        alert(`Failed to copy link. Please copy manually:\n${shareUrl}`);
+      });
   };
 
   return (
@@ -118,9 +154,12 @@ const CustomSendAMessageCard = () => {
               @{recipient || "type your recipient here"}
             </button>
           )}
-          <button>
-            <FiShare2 className="w-4 h-4 cursor-pointer duration-200 ease-in-out select-none hover:scale-110" />
-          </button>
+          
+          {recipient && recipient.trim().length >= 3 && (
+            <button onClick={handleShare}>
+              <FiShare2 className="w-4 h-4 cursor-pointer duration-200 ease-in-out select-none hover:scale-110" />
+            </button>
+          )}
         </div>
       </div>
 
@@ -142,10 +181,15 @@ const CustomSendAMessageCard = () => {
       </div>
 
       <div className="flex flex-col-reverse items-end pt-2 p-6 gap-0.5 h-56 overflow-y-auto custom-scroll">
-        <CustomChatBubble content="Hi kuys" />
-        <CustomChatBubble content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non quis facilis error labore ipsum assumenda officia, temporibus natus exercitationem voluptatum. Tempora itaque ea mollitia, magni placeat incidunt dolor nesciunt saepe." />
-        <CustomChatBubble content="Ano gawa mo kupal?" />
-        <CustomChatBubble content="shabu pa nigga" />
+        {sentMessages.length === 0 ? (
+          <p className="text-secondaryTextColor font-mulish text-sm">
+            No messages sent yet.
+          </p>
+        ) : (
+          sentMessages.map((msg) => (
+            <CustomChatBubble key={msg.message_id} content={msg.content} />
+          ))
+        )}
       </div>
 
       <div className="px-6 pb-6 pt-6">
@@ -159,7 +203,8 @@ const CustomSendAMessageCard = () => {
           />
           <button
             onClick={handleSubmitMessage}
-            className="bg-purple hover:bg-purpleHover cursor-pointer text-offWhite rounded-lg px-4 py-3 flex items-center justify-center transition-colors"
+            disabled={!message.trim()}
+            className="bg-purple hover:bg-purpleHover cursor-pointer text-offWhite rounded-lg px-4 py-3 flex items-center justify-center disabled:bg-purple/50 disabled:text-white/60 disabled:cursor-not-allowed transition-colors"
           >
             <IoPaperPlaneOutline className="w-5 h-5" />
           </button>

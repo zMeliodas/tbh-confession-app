@@ -117,7 +117,7 @@ async function confession(senderId, receiverUsername, content) {
   const result = await pool.query(
     `INSERT INTO messages (sender_id, receiver_id, content)
      VALUES ($1, $2, $3)
-     RETURNING message_id, created_at, content`,
+     RETURNING message_id, created_at, content, receiver_id`,
     [senderId, receiverId, content],
   );
 
@@ -141,7 +141,7 @@ async function getReceivedConfessionsById(userId) {
     return {
       success: true,
       message: "No received messages yet.",
-      data: null,
+      data: [],
     };
   }
 
@@ -166,7 +166,7 @@ async function getSentConfessionsById(userId) {
     return {
       success: true,
       message: "No sent messages yet.",
-      data: null,
+      data: [],
     };
   }
 
