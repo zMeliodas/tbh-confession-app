@@ -6,8 +6,10 @@ import {
   getSentConfessionsById,
   getReceivedConfessionsById,
   getUserByUsername,
+  updateUserAvatar,
 } from "../services/userService.js";
 import { io, onlineUsers } from "../server.js";
+import { cloudinary } from "../config/cloudinary.js";
 
 async function deleteUser(req, res) {
   try {
@@ -190,6 +192,43 @@ async function getRecipient(req, res) {
   }
 }
 
+async function updateAvatar(req, res) {
+  try {
+    const userId = req.user.id;
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, error: "No file uploaded" });
+    }
+
+    const uploadResult = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: "avatars",
+          transformation: [{ width: 300, height: 300, crop: "fill" }],
+        },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        },
+      );
+      stream.end(req.file.buffer);
+    });
+
+    const imageUrl = uploadResult.secure_url;
+    await updateUserAvatar(userId, imageUrl);
+
+    res.status(200).json({
+      success: true,
+      message: "Avatar updated",
+      data: { image: imageUrl },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+}
+
 export {
   deleteUser,
   updateUserName,
@@ -198,4 +237,5 @@ export {
   getReceivedConfessions,
   getSentConfessions,
   getRecipient,
+  updateAvatar,
 };

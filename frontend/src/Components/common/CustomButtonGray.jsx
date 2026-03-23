@@ -1,5 +1,3 @@
-import React from "react";
-
 const CustomButtonGray = ({ icon, padding, paddingTop, text, width, onClick, textSize = "text-lg"}) => {
   return (
     <>

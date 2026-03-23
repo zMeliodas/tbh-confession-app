@@ -5,7 +5,6 @@ import CustomProfilePic from "./CustomProfilePic";
 
 const CustomChatSection = () => {
   const [message, setMessage] = useState("");
-
   const { user } = useAuth();
 
   return (
@@ -13,8 +12,8 @@ const CustomChatSection = () => {
       <div className="bg-cardBg border border-borderColor rounded-lg flex flex-col gap-2 shadow-2xl">
         <div className="flex justify-start border-b border-borderColor gap-2 px-4 py-4 w-full">
           <CustomProfilePic
-            userImage={user.image}
-            src={user.image}
+            userImage={user.user_image}
+            src={user.user_image}
             username={user.user_name}
             baseSize="w-8 h-8"
             textSize="text-lg"

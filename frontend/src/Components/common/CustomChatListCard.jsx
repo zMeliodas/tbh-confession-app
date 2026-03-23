@@ -7,8 +7,8 @@ const CustomChatListCard = ({ username, content }) => {
   return (
     <div className="flex justify-start rounded-lg border-borderColor gap-2 px-2 py-2 w-full cursor-pointer hover:bg-secondaryTextColor/40">
       <CustomProfilePic
-        userImage={user.image}
-        src={user.image}
+        userImage={user.user_image}
+        src={user.user_image}
         username={user.user_name}
         textSize="text-lg"
         baseSize="w-12 h-12"

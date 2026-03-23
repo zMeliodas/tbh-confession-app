@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FaCheck } from "react-icons/fa6";
 import InputField from "../../common/InputField";
 import CustomSpinner from "src/Components/common/CustomSpinner";
@@ -16,6 +16,18 @@ const GeneralSettings = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const fileInputRef = useRef(null);
+  const [avatarLoading, setAvatarLoading] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setSelectedFile(file);
+    setAvatarPreview(URL.createObjectURL(file));
+  };
 
   const handleSaveChanges = async () => {
     if (
@@ -40,11 +52,19 @@ const GeneralSettings = () => {
       const updates = {};
       const updatePromises = [];
 
+      if (selectedFile) {
+        updatePromises.push(
+          userApi.updateAvatar(selectedFile, token).then((result) => {
+            updates.user_image = result.data.image;
+          }),
+        );
+      }
+
       if (newUserName !== user.user_name) {
         updatePromises.push(
           userApi.updateUserName(newUserName, token).then(() => {
             updates.user_name = newUserName;
-          })
+          }),
         );
       }
 
@@ -52,7 +72,7 @@ const GeneralSettings = () => {
         updatePromises.push(
           userApi.updateUserPrompt(newPrompt, token).then(() => {
             updates.user_prompt = newPrompt;
-          })
+          }),
         );
       }
 
@@ -60,8 +80,9 @@ const GeneralSettings = () => {
 
       if (Object.keys(updates).length > 0) {
         updateUser(updates);
+        setSelectedFile(null);
+        setAvatarPreview(null);
         setSuccess("Profile updated successfully!");
-
         setTimeout(() => setSuccess(null), 3000);
       }
     } catch (error) {
@@ -78,20 +99,28 @@ const GeneralSettings = () => {
   };
 
   const hasChanges =
-    newUserName !== user.user_name || newPrompt !== user.user_prompt;
+    newUserName !== user.user_name ||
+    newPrompt !== user.user_prompt ||
+    selectedFile !== null;
 
   return (
     <>
-      <div className="flex flex-col gap-2 w-full items-center justify-center">
+      <div className="flex flex-col gap-4 w-full items-center justify-center">
         <CustomProfilePic
-          userImage={user.image}
-          src={user.image}
+          userImage={avatarPreview || user.user_image}
+          src={avatarPreview || user.user_image}
           username={user.user_name}
           textSize="text-2xl"
           baseSize="w-24 h-24"
         />
 
-        <input type="file" />
+        <input
+          type="file"
+          ref={fileInputRef}
+          className="hidden"
+          accept="image/*"
+          onChange={handleAvatarChange}
+        />
 
         <CustomButtonGray
           textSize="text-xs"
@@ -99,10 +128,13 @@ const GeneralSettings = () => {
           text={
             <div className="flex items-center justify-center gap-1">
               <RiImageAddFill className="w-5 h-5 pr-1" />
-              <span className="font-mulish">Change Avatar</span>
+              <span className="font-mulish">
+                {avatarLoading ? "Uploading..." : "Change Avatar"}
+              </span>
             </div>
           }
           width="w-38"
+          onClick={() => fileInputRef.current.click()}
         />
       </div>
 

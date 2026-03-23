@@ -73,7 +73,7 @@ const ProfilePage = () => {
         <div className="flex flex-col items-center space-y-4">
           <CustomProfilePic
             userImage={user.image}
-            src={user.image}
+            src={user.user_image}
             username={user.user_name}
             textSize="text-2xl"
             baseSize="w-14 h-14"
@@ -115,7 +115,7 @@ const ProfilePage = () => {
 
         <div className="mt-2 text-offWhite text-center">
           <Activity mode={activeTab === "received" ? "visible" : "hidden"}>
-            {!receivedConfessions ? (
+            {receivedConfessions.length === 0 ? (
               <p className="text-primaryTextColor font-mulish">
                 {receivedStatus}
               </p>
@@ -131,7 +131,7 @@ const ProfilePage = () => {
           </Activity>
 
           <Activity mode={activeTab === "sent" ? "visible" : "hidden"}>
-            {!sentConfessions ? (
+            {sentConfessions.length === 0 ? (
               <p className="text-primaryTextColor font-mulish">{sentStatus}</p>
             ) : (
               sentConfessions.map((confession) => (

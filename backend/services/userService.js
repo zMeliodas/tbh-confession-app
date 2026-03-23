@@ -177,6 +177,15 @@ async function getSentConfessionsById(userId) {
   };
 }
 
+async function updateUserAvatar(userId, imageUrl) {
+  const result = await pool.query(
+    "UPDATE users SET user_image = $1 WHERE user_id = $2 RETURNING *",
+    [imageUrl, userId],
+  );
+
+  return { success: true, data: result.rows[0] };
+}
+
 export {
   deleteUserAccount,
   updateUser,
@@ -186,4 +195,5 @@ export {
   getReceivedConfessionsById,
   getSentConfessionsById,
   getUserByUsername,
+  updateUserAvatar,
 };

@@ -11,7 +11,7 @@ async function registerUser(username, password) {
 
     const newUser = await pool.query(
       "INSERT INTO users (user_name, user_password) VALUES ($1, $2) RETURNING *",
-      [username, hashedPassword]
+      [username, hashedPassword],
     );
 
     const user = newUser.rows[0];
@@ -25,6 +25,7 @@ async function registerUser(username, password) {
         user_id: user.user_id,
         user_name: user.user_name,
         user_prompt: user.user_prompt,
+        user_image: user.user_image,
       },
     };
   } catch (error) {
@@ -45,7 +46,7 @@ async function loginUser(username, password) {
   try {
     const result = await pool.query(
       "SELECT * FROM users WHERE user_name = $1",
-      [username]
+      [username],
     );
 
     if (result.rows.length === 0) {
@@ -75,6 +76,7 @@ async function loginUser(username, password) {
         user_id: user.user_id,
         user_name: user.user_name,
         user_prompt: user.user_prompt,
+        image: user.user_image,
       },
     };
   } catch (error) {

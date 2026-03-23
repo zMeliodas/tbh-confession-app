@@ -130,4 +130,21 @@ export const userApi = {
 
     return data;
   },
+
+  async updateAvatar(file, token) {
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    const response = await fetch(`${API_BASE_URL}/user/updateAvatar`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Avatar update failed");
+    return data;
+  },
 };
