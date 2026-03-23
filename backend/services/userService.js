@@ -17,9 +17,9 @@ async function deleteUserAccount(userId) {
 
 async function getUserById(userId) {
   const result = await pool.query(
-    "SELECT user_id, user_name, user_prompt FROM users WHERE user_id = $1",
-    [userId],
-  );
+  "SELECT user_id, user_name, user_prompt, user_image, user_image_public_id FROM users WHERE user_id = $1",
+  [userId],
+);
 
   if (result.rows.length === 0) {
     throw new Error("User not found");
@@ -34,7 +34,7 @@ async function getUserById(userId) {
 
 async function getUserByUsername(username, currentUserId) {
   const result = await pool.query(
-    "SELECT user_id, user_name, user_prompt FROM users WHERE user_name = $1",
+    "SELECT user_id, user_name, user_prompt, user_image FROM users WHERE user_name = $1",
     [username],
   );
 
@@ -177,10 +177,10 @@ async function getSentConfessionsById(userId) {
   };
 }
 
-async function updateUserAvatar(userId, imageUrl) {
+async function updateUserAvatar(userId, imageUrl, publicId) {
   const result = await pool.query(
-    "UPDATE users SET user_image = $1 WHERE user_id = $2 RETURNING *",
-    [imageUrl, userId],
+    "UPDATE users SET user_image = $1, user_image_public_id = $2 WHERE user_id = $3 RETURNING *",
+    [imageUrl, publicId, userId],
   );
 
   return { success: true, data: result.rows[0] };

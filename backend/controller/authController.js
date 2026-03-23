@@ -65,6 +65,7 @@ async function verifyUser(req, res) {
         user_id: result.user.user_id,
         user_name: result.user.user_name,
         user_prompt: result.user.user_prompt,
+        user_image: result.user.user_image,
       },
     });
   } catch (error) {

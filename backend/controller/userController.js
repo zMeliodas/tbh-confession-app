@@ -7,6 +7,7 @@ import {
   getReceivedConfessionsById,
   getUserByUsername,
   updateUserAvatar,
+  getUserById,
 } from "../services/userService.js";
 import { io, onlineUsers } from "../server.js";
 import { cloudinary } from "../config/cloudinary.js";
@@ -202,6 +203,13 @@ async function updateAvatar(req, res) {
         .json({ success: false, error: "No file uploaded" });
     }
 
+    const currentUser = await getUserById(userId);
+    const oldPublicId = currentUser.user.user_image_public_id;
+
+    if (oldPublicId) {
+      await cloudinary.uploader.destroy(oldPublicId);
+    }
+
     const uploadResult = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
@@ -217,14 +225,17 @@ async function updateAvatar(req, res) {
     });
 
     const imageUrl = uploadResult.secure_url;
-    await updateUserAvatar(userId, imageUrl);
+    const publicId = uploadResult.public_id;
+
+    await updateUserAvatar(userId, imageUrl, publicId);
 
     res.status(200).json({
       success: true,
       message: "Avatar updated",
-      data: { image: imageUrl },
+      data: { user_image: imageUrl },
     });
   } catch (error) {
+    console.log("updateAvatar error:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 }

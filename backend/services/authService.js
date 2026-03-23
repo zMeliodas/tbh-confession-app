@@ -76,7 +76,7 @@ async function loginUser(username, password) {
         user_id: user.user_id,
         user_name: user.user_name,
         user_prompt: user.user_prompt,
-        image: user.user_image,
+        user_image: user.user_image,
       },
     };
   } catch (error) {

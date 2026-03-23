@@ -7,11 +7,11 @@ import { FiGithub } from "react-icons/fi";
 const PageNotFound = () => {
   return (
     <div className="bg-backgroundColor flex items-center content-center justify-center gap-24 pt-24 h-screen">
-      <div className="ml-8 max-w-lg max-h-lg">
+      <div className="hidden md:block ml-8 max-w-lg max-h-lg">
         <img src={logo} alt="logo" className="w-full h-full " />
       </div>
 
-      <div className="flex flex-col mr-8">
+      <div className="flex flex-col items-center justify-center">
         <h1 className="text-primaryTextColor text-center text-4xl sm:text-6xl md:text-7xl lg:text-8xl w-full font-mulish font-extrabold tracking-tighter">
           Page Not Found
         </h1>

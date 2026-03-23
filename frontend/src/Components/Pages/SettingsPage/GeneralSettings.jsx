@@ -55,7 +55,7 @@ const GeneralSettings = () => {
       if (selectedFile) {
         updatePromises.push(
           userApi.updateAvatar(selectedFile, token).then((result) => {
-            updates.user_image = result.data.image;
+            updates.user_image = result.data.user_image;
           }),
         );
       }

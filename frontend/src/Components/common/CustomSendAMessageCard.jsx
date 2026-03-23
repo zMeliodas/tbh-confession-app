@@ -167,8 +167,8 @@ const CustomSendAMessageCard = () => {
         <div className="flex items-center gap-3 bg-promptContainer rounded-lg px-4 py-3">
           <div className="w-8 h-8 bg-textFieldGray rounded-lg flex items-center justify-center">
             <CustomProfilePic
-              userImage={recipientData.image}
-              src={recipientData.image}
+              userImage={recipientData.user_image}
+              src={recipientData.user_image}
               username={recipientData.user_name}
               baseSize="w-8 h-8"
               textSize="text-lg"
