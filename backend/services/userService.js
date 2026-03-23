@@ -177,10 +177,10 @@ async function getSentConfessionsById(userId) {
   };
 }
 
-async function updateUserAvatar(userId, imageUrl, publicId) {
+async function updateUserAvatar(userId, imageUrl) {
   const result = await pool.query(
-    "UPDATE users SET user_image = $1, user_image_public_id = $2 WHERE user_id = $3 RETURNING *",
-    [imageUrl, publicId, userId],
+    "UPDATE users SET user_image = $1 WHERE user_id = $2 RETURNING *",
+    [imageUrl, userId],
   );
 
   return { success: true, data: result.rows[0] };

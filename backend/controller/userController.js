@@ -203,17 +203,12 @@ async function updateAvatar(req, res) {
         .json({ success: false, error: "No file uploaded" });
     }
 
-    const currentUser = await getUserById(userId);
-    const oldPublicId = currentUser.user.user_image_public_id;
-
-    if (oldPublicId) {
-      await cloudinary.uploader.destroy(oldPublicId);
-    }
-
     const uploadResult = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
           folder: "avatars",
+          public_id: `user_${userId}`,
+          overwrite: true,
           transformation: [{ width: 300, height: 300, crop: "fill" }],
         },
         (error, result) => {
@@ -225,9 +220,8 @@ async function updateAvatar(req, res) {
     });
 
     const imageUrl = uploadResult.secure_url;
-    const publicId = uploadResult.public_id;
 
-    await updateUserAvatar(userId, imageUrl, publicId);
+    await updateUserAvatar(userId, imageUrl);
 
     res.status(200).json({
       success: true,
@@ -235,7 +229,6 @@ async function updateAvatar(req, res) {
       data: { user_image: imageUrl },
     });
   } catch (error) {
-    console.log("updateAvatar error:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 }
