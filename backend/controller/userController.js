@@ -7,7 +7,7 @@ import {
   getReceivedConfessionsById,
   getUserByUsername,
   updateUserAvatar,
-  getUserById,
+  updatePassword,
 } from "../services/userService.js";
 import { io, onlineUsers } from "../server.js";
 import { cloudinary } from "../config/cloudinary.js";
@@ -233,6 +233,23 @@ async function updateAvatar(req, res) {
   }
 }
 
+async function changePassword(req, res) {
+  try {
+    const userId = req.user.id;
+    const { currentPassword, newPassword } = req.body;
+
+    const result = await updatePassword(userId, currentPassword, newPassword);
+
+    if (!result.success) {
+      return res.status(400).json({ success: false, error: result.message });
+    }
+
+    res.status(200).json({ success: true, message: result.message });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+}
+
 export {
   deleteUser,
   updateUserName,
@@ -242,4 +259,5 @@ export {
   getSentConfessions,
   getRecipient,
   updateAvatar,
+  changePassword,
 };

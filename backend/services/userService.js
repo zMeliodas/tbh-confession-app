@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import bcrypt from "bcryptjs";
 
 async function deleteUserAccount(userId) {
   const result = await pool.query("DELETE FROM users WHERE user_id = $1", [
@@ -17,9 +18,9 @@ async function deleteUserAccount(userId) {
 
 async function getUserById(userId) {
   const result = await pool.query(
-  "SELECT user_id, user_name, user_prompt, user_image, user_image_public_id FROM users WHERE user_id = $1",
-  [userId],
-);
+    "SELECT user_id, user_name, user_prompt, user_image FROM users WHERE user_id = $1",
+    [userId],
+  );
 
   if (result.rows.length === 0) {
     throw new Error("User not found");
@@ -186,6 +187,33 @@ async function updateUserAvatar(userId, imageUrl) {
   return { success: true, data: result.rows[0] };
 }
 
+async function updatePassword(userId, currentPassword, newPassword) {
+  const result = await pool.query(
+    "SELECT user_password FROM users WHERE user_id = $1",
+    [userId],
+  );
+
+  if (result.rows.length === 0) {
+    return { success: false, message: "User not found" };
+  }
+
+  const validPassword = await bcrypt.compare(
+    currentPassword,
+    result.rows[0].user_password,
+  );
+  if (!validPassword) {
+    return { success: false, message: "Current password is incorrect" };
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  await pool.query("UPDATE users SET user_password = $1 WHERE user_id = $2", [
+    hashedPassword,
+    userId,
+  ]);
+
+  return { success: true, message: "Password updated successfully" };
+}
+
 export {
   deleteUserAccount,
   updateUser,
@@ -196,4 +224,5 @@ export {
   getSentConfessionsById,
   getUserByUsername,
   updateUserAvatar,
+  updatePassword,
 };

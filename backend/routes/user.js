@@ -6,6 +6,7 @@ import {
   getSentConfessions,
   sendConfession,
   updateAvatar,
+  changePassword
 } from "../controller/userController.js";
 import { deleteUser } from "../controller/userController.js";
 import { updateUserName } from "../controller/userController.js";
@@ -50,5 +51,7 @@ router.put(
   upload.single("avatar"),
   updateAvatar,
 );
+
+router.put("/changePassword", authorizeUser, changePassword);
 
 export default router;

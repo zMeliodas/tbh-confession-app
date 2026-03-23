@@ -147,4 +147,19 @@ export const userApi = {
     if (!response.ok) throw new Error(data.error || "Avatar update failed");
     return data;
   },
+
+  async changePassword(currentPassword, newPassword, token) {
+    const response = await fetch(`${API_BASE_URL}/user/changePassword`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ currentPassword, newPassword }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Password change failed");
+    return data;
+  },
 };

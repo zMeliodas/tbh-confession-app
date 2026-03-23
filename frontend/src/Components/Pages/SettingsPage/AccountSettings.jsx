@@ -2,16 +2,64 @@ import InputField from "../../common/InputField";
 import CustomButtonPurple from "../../common/CustomButtonPurple";
 import { FaKey } from "react-icons/fa";
 import { useState } from "react";
+import { useAuth } from "../../../providers/AuthProvider";
+import { userApi } from "../../../services/userApi";
+import CustomSpinner from "../../common/CustomSpinner";
+
 const AccountSettings = ({ onDeleteAccountClick }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { token } = useAuth();
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChangePassword = async () => {
+    setError(null);
+    setSuccess(null);
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setError("New password must be at least 8 characters");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const result = await userApi.changePassword(
+        currentPassword,
+        newPassword,
+        token,
+      );
+      setSuccess(result.message);
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
       <InputField
         label="Current Password"
-        inputType="text"
+        inputType="password"
+        value={currentPassword}
         width="w-full"
         onChange={(e) => {
           setCurrentPassword(e.target.value);
@@ -20,7 +68,8 @@ const AccountSettings = ({ onDeleteAccountClick }) => {
 
       <InputField
         label="New Password"
-        inputType="text"
+        inputType="password"
+        value={newPassword}
         width="w-full"
         onChange={(e) => {
           setNewPassword(e.target.value);
@@ -29,12 +78,18 @@ const AccountSettings = ({ onDeleteAccountClick }) => {
 
       <InputField
         label="Confirm Password"
-        inputType="text"
+        inputType="password"
+        value={confirmPassword}
         width="w-full"
         onChange={(e) => {
           setConfirmPassword(e.target.value);
         }}
       />
+
+      {error && <p className="text-red-500 text-sm font-mulish">{error}</p>}
+      {success && (
+        <p className="text-green-300 text-sm font-mulish">{success}</p>
+      )}
 
       <div className="flex flex-row-reverse mt-6">
         <CustomButtonPurple
@@ -42,11 +97,16 @@ const AccountSettings = ({ onDeleteAccountClick }) => {
           padding="p-2"
           text={
             <div className="flex items-center justify-center gap-1">
-              <FaKey className="w-4 h-4 pr-1" />
+              {isLoading ? (
+                <CustomSpinner />
+              ) : (
+                <FaKey className="w-4 h-4 pr-1" />
+              )}
               <span className="font-mulish">Set Password</span>
             </div>
           }
           width="w-34"
+          onClick={handleChangePassword}
         />
       </div>
 
