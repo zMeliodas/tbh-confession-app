@@ -6,7 +6,9 @@ import {
   getSentConfessions,
   sendConfession,
   updateAvatar,
-  changePassword
+  changePassword,
+  deleteSentMessage,
+  deleteReceivedMessage,
 } from "../controller/userController.js";
 import { deleteUser } from "../controller/userController.js";
 import { updateUserName } from "../controller/userController.js";
@@ -53,5 +55,12 @@ router.put(
 );
 
 router.put("/changePassword", authorizeUser, changePassword);
+
+router.delete("/confession/sent/:messageId", authorizeUser, deleteSentMessage);
+router.delete(
+  "/confession/received/:messageId",
+  authorizeUser,
+  deleteReceivedMessage,
+);
 
 export default router;

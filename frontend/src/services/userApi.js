@@ -162,4 +162,32 @@ export const userApi = {
     if (!response.ok) throw new Error(data.error || "Password change failed");
     return data;
   },
+
+  async deleteSentMessage(messageId, token) {
+    const response = await fetch(
+      `${API_BASE_URL}/user/confession/sent/${messageId}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Delete failed");
+    return data;
+  },
+
+  async deleteReceivedMessage(messageId, token) {
+    const response = await fetch(
+      `${API_BASE_URL}/user/confession/received/${messageId}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Delete failed");
+    return data;
+  },
 };

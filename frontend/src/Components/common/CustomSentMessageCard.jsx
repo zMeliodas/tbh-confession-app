@@ -2,7 +2,7 @@ import { TbMessage2Plus } from "react-icons/tb";
 import { RiImageAddLine } from "react-icons/ri";
 import { MdOutlineDelete } from "react-icons/md";
 
-const CustomSentMessageCard = ({ content, createdAt, recipient }) => {
+const CustomSentMessageCard = ({ content, createdAt, recipient, onDelete }) => {
   return (
     <div className="bg-purple flex flex-col p-4 py-2 mb-2 w-72 sm:w-lg md:w-2xl border rounded-lg border-borderColor">
       <div className="flex flex-row justify-between">
@@ -28,6 +28,7 @@ const CustomSentMessageCard = ({ content, createdAt, recipient }) => {
           />
           <MdOutlineDelete
             title="Delete Message"
+            onClick={onDelete}
             className="w-6 h-6 cursor-pointer text-offWhite duration-200 ease-in-out select-none hover:scale-110"
           />
         </div>

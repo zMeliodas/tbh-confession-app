@@ -8,6 +8,8 @@ import {
   getUserByUsername,
   updateUserAvatar,
   updatePassword,
+  deleteMessageByReceiver,
+  deleteMessageBySender,
 } from "../services/userService.js";
 import { io, onlineUsers } from "../server.js";
 import { cloudinary } from "../config/cloudinary.js";
@@ -250,6 +252,40 @@ async function changePassword(req, res) {
   }
 }
 
+async function deleteSentMessage(req, res) {
+  try {
+    const userId = req.user.id;
+    const { messageId } = req.params;
+
+    const result = await deleteMessageBySender(messageId, userId);
+
+    if (!result.success) {
+      return res.status(404).json({ success: false, error: result.message });
+    }
+
+    res.status(200).json({ success: true, message: result.message });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+}
+
+async function deleteReceivedMessage(req, res) {
+  try {
+    const userId = req.user.id;
+    const { messageId } = req.params;
+
+    const result = await deleteMessageByReceiver(messageId, userId);
+
+    if (!result.success) {
+      return res.status(404).json({ success: false, error: result.message });
+    }
+
+    res.status(200).json({ success: true, message: result.message });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+}
+
 export {
   deleteUser,
   updateUserName,
@@ -260,4 +296,6 @@ export {
   getRecipient,
   updateAvatar,
   changePassword,
+  deleteSentMessage,
+  deleteReceivedMessage,
 };

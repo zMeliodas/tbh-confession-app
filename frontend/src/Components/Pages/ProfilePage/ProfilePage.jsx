@@ -8,6 +8,7 @@ import { userApi } from "../../../services/userApi.js";
 import CustomSentMessageCard from "../../common/CustomSentMessageCard.jsx";
 import { formatDate } from "../../../utils/stringUtils.js";
 import { io } from "socket.io-client";
+import ConfirmDeleteModal from "../../Modals/ConfirmDeleteModal.jsx";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("received");
@@ -18,6 +19,11 @@ const ProfilePage = () => {
   const [copied, setCopied] = useState(false);
   const { user, token } = useAuth();
   const socketRef = useRef(null);
+  const [deleteModal, setDeleteModal] = useState({
+    show: false,
+    messageId: null,
+    type: null,
+  });
 
   const getSentConfessions = async () => {
     try {
@@ -52,27 +58,59 @@ const ProfilePage = () => {
   }, []);
 
   useEffect(() => {
-  socketRef.current = io(import.meta.env.VITE_API_URL);
-  socketRef.current.emit("login", user.user_id);
+    socketRef.current = io(import.meta.env.VITE_API_URL);
+    socketRef.current.emit("login", user.user_id);
 
-  socketRef.current.on("newMessage", (msg) => {
-    if (msg.receiverUsername === user.user_name) {
-      setReceivedConfessions(prev => [msg, ...prev]);
-    }
-    if (msg.senderId === user.user_id) {
-      setSentConfessions(prev => [msg, ...prev]);
-    }
-  });
+    socketRef.current.on("newMessage", (msg) => {
+      if (msg.receiverUsername === user.user_name) {
+        setReceivedConfessions((prev) => [msg, ...prev]);
+      }
+      if (msg.senderId === user.user_id) {
+        setSentConfessions((prev) => [msg, ...prev]);
+      }
+    });
 
-  return () => socketRef.current.disconnect();
-}, [user]);
+    return () => socketRef.current.disconnect();
+  }, [user]);
+
+  const handleDeleteClick = (messageId, type) => {
+    setDeleteModal({ show: true, messageId, type });
+  };
+
+  const handleConfirmDelete = async () => {
+    const { messageId, type } = deleteModal;
+    try {
+      if (type === "sent") {
+        await userApi.deleteSentMessage(messageId, token);
+        setSentConfessions((prev) =>
+          prev.filter((m) => m.message_id !== messageId),
+        );
+      } else {
+        await userApi.deleteReceivedMessage(messageId, token);
+        setReceivedConfessions((prev) =>
+          prev.filter((m) => m.message_id !== messageId),
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setDeleteModal({ show: false, messageId: null, type: null });
+    }
+  };
 
   return (
     <div className="bg-backgroundColor text-primaryTextColor flex flex-col items-center pt-24 min-h-screen">
+      <ConfirmDeleteModal
+        isOpen={deleteModal.show}
+        onClose={() =>
+          setDeleteModal({ show: false, messageId: null, type: null })
+        }
+        onConfirm={handleConfirmDelete}
+      />
+
       <div className="bg-cardBg flex flex-col py-4 px-4 mb-8 mx-8 w-88 justify-center items-center content-center border rounded-xl border-borderColor sm:w-xl md:w-3xl lg:w-5xl">
         <div className="flex flex-col items-center space-y-4">
           <CustomProfilePic
-            userImage={user.image}
             src={user.user_image}
             username={user.user_name}
             textSize="text-2xl"
@@ -91,7 +129,9 @@ const ProfilePage = () => {
           >
             <IoLinkSharp className="w-4 h-4" />
             <span className="text-primaryTextColor text-xs md:text-sm font-mulish font-semibold">
-              {copied ? "Copied!" : `${window.location.origin}/confess/${user.user_name}`}
+              {copied
+                ? "Copied!"
+                : `${window.location.origin}/confess/${user.user_name}`}
             </span>
           </div>
         </div>
@@ -125,6 +165,9 @@ const ProfilePage = () => {
                   key={confession.message_id}
                   content={confession.content}
                   createdAt={formatDate(confession.created_at)}
+                  onDelete={() =>
+                    handleDeleteClick(confession.message_id, "received")
+                  }
                 />
               ))
             )}
@@ -140,6 +183,9 @@ const ProfilePage = () => {
                   content={confession.content}
                   createdAt={formatDate(confession.created_at)}
                   recipient={confession.user_name}
+                  onDelete={() =>
+                    handleDeleteClick(confession.message_id, "sent")
+                  }
                 />
               ))
             )}

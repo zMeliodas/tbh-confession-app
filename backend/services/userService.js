@@ -133,7 +133,7 @@ async function getReceivedConfessionsById(userId) {
   const result = await pool.query(
     `SELECT message_id, content, created_at 
      FROM messages 
-     WHERE receiver_id = $1
+     WHERE receiver_id = $1 AND deleted_by_receiver = FALSE
      ORDER BY created_at DESC`,
     [userId],
   );
@@ -148,7 +148,8 @@ async function getReceivedConfessionsById(userId) {
 
   return {
     success: true,
-    message: "Messages retrieved",
+    message:
+      result.rows.length === 0 ? "No sent messages yet." : "Messages retrieved",
     data: result.rows,
   };
 }
@@ -158,7 +159,7 @@ async function getSentConfessionsById(userId) {
     `SELECT m.message_id, m.receiver_id, m.content, m.created_at, u.user_name
      FROM messages m
      JOIN users u ON m.receiver_id = u.user_id
-     WHERE m.sender_id = $1
+     WHERE m.sender_id = $1 AND m.deleted_by_sender = FALSE
      ORDER BY m.created_at DESC`,
     [userId],
   );
@@ -173,7 +174,8 @@ async function getSentConfessionsById(userId) {
 
   return {
     success: true,
-    message: "Messages retrieved",
+    message:
+      result.rows.length === 0 ? "No sent messages yet." : "Messages retrieved",
     data: result.rows,
   };
 }
@@ -214,6 +216,34 @@ async function updatePassword(userId, currentPassword, newPassword) {
   return { success: true, message: "Password updated successfully" };
 }
 
+async function deleteMessageBySender(messageId, userId) {
+  const result = await pool.query(
+    `UPDATE messages SET deleted_by_sender = TRUE 
+     WHERE message_id = $1 AND sender_id = $2 RETURNING *`,
+    [messageId, userId],
+  );
+
+  if (result.rowCount === 0) {
+    return { success: false, message: "Message not found" };
+  }
+
+  return { success: true, message: "Message deleted" };
+}
+
+async function deleteMessageByReceiver(messageId, userId) {
+  const result = await pool.query(
+    `UPDATE messages SET deleted_by_receiver = TRUE 
+     WHERE message_id = $1 AND receiver_id = $2 RETURNING *`,
+    [messageId, userId],
+  );
+
+  if (result.rowCount === 0) {
+    return { success: false, message: "Message not found" };
+  }
+
+  return { success: true, message: "Message deleted" };
+}
+
 export {
   deleteUserAccount,
   updateUser,
@@ -225,4 +255,6 @@ export {
   getUserByUsername,
   updateUserAvatar,
   updatePassword,
+  deleteMessageByReceiver,
+  deleteMessageBySender,
 };
