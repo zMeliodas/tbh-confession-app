@@ -9,6 +9,8 @@
   --color-navIconColor: #27272a;
   --color-hoverColorNav: #e6e3e1;
   --color-cardBg: #e8e6e4;
+  --color-cardBg2: #fffdfa;
+  --color-cardTextField: #e8e6e4;
   --color-borderColor: #d9d6d4;
   --color-textFieldBg: #f7f6f5;
   --color-secondaryTextColor: #84848c;
@@ -17,6 +19,16 @@
   --color-linkContainer: #d9d6d4;
   --color-offWhite: #f2f0ef;
   --color-promptContainer: #b4b3b1;
+
+  --color-bgAccept: #dcfce7;
+  --color-textAccept: #15803d;
+
+  --color-bgReject: #fee2e2;
+  --color-textReject: #b91c1c;
+
+  --color-bgPending: #fef9c3;
+  --color-textPending: #a16207;
+
   --font-mulish: "Mulish", sans-serif;
 }
 
@@ -32,6 +44,8 @@
     --color-navIconColor: #9f9fa9;
     --color-hoverColorNav: #27272a;
     --color-cardBg: #18181b;
+    --color-cardBg2: #222222;
+    --color-cardTextField: #111113;
     --color-borderColor: #3a3a3d;
     --color-textFieldBg: #3a3a3d;
     --color-customGray: #2e2e30;
@@ -39,16 +53,26 @@
     --color-linkContainer: #3a3a3c;
     --color-offWhite: #f2f0ef;
     --color-promptContainer: #27272a;
+
+    --color-bgAccept: #193625;
+    --color-textAccept: #0dbc59;
+
+    --color-bgReject: #481d1e;
+    --color-textReject: #ff6467;
+
+    --color-bgPending: #452817;
+    --color-textPending: #e1b900;
+
     --font-mulish: "Mulish", sans-serif;
   }
 }
 
 .custom-scroll::-webkit-scrollbar {
-  width: 4px; 
+  width: 4px;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-  background: transparent; 
+  background: transparent;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {

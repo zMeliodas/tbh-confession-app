@@ -9,9 +9,69 @@ import CustomSentMessageCard from "../../common/CustomSentMessageCard.jsx";
 import { formatDate } from "../../../utils/stringUtils.js";
 import { io } from "socket.io-client";
 import ConfirmDeleteModal from "../../Modals/ConfirmDeleteModal.jsx";
+import CustomIncomingWhisperRequestCard from "../../common/CustomIncomingWhisperRequest.jsx";
+import CustomSentWhisperRequestCard from "../../common/CustomSentWhisperRequestCard.jsx";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("received");
+  const [whisperRequests, setWhisperRequests] = useState([
+    {
+      id: 1,
+      messagePreview: "tara usap?",
+      time: "2h ago",
+      status: "pending",
+    },
+    {
+      id: 2,
+      messagePreview: "g ka ba mag chat?",
+      time: "5h ago",
+      status: "accepted",
+    },
+    {
+      id: 3,
+      messagePreview: "hello 👀",
+      time: "1d ago",
+      status: "pending",
+    },
+    {
+      id: 4,
+      messagePreview: "pwede magpakilala?",
+      time: "2d ago",
+      status: "rejected",
+    },
+  ]);
+
+  const [sentWhisperRequests, setSentWhisperRequests] = useState([
+    {
+      id: 101,
+      recipientUsername: "john_doe",
+      recipientImage: "",
+      messagePreview: "tara usap?",
+      time: "2h ago",
+      status: "pending",
+    },
+    {
+      id: 102,
+      recipientUsername: "jane_smith",
+      recipientImage: "",
+      messagePreview: "g ka ba mag chat?",
+      time: "5h ago",
+      status: "accepted",
+    },
+    {
+      id: 103,
+      recipientUsername: "maria_123",
+      recipientImage: "",
+      messagePreview: "hello 👀",
+      time: "1d ago",
+      status: "rejected",
+    },
+  ]);
+
+  const pendingCount = whisperRequests.filter(
+    (r) => r.status === "pending",
+  ).length;
+
   const [sentConfessions, setSentConfessions] = useState([]);
   const [receivedConfessions, setReceivedConfessions] = useState([]);
   const [sentStatus, setSentStatus] = useState("");
@@ -138,18 +198,26 @@ const ProfilePage = () => {
 
         <div className="flex mt-4 mb-2 border-b border-borderColor">
           <CustomTabButton
-            width="w-28 md:w-46"
+            width="w-22 sm:w-32 md:w-46"
             textSize="text-sm md:text-md"
             text="Received"
             isActive={activeTab === "received"}
             onClick={() => setActiveTab("received")}
           />
           <CustomTabButton
-            width="w-28 md:w-46"
+            width="w-22 sm:w-32 md:w-46"
             textSize="text-sm md:text-md"
             text="Sent"
             isActive={activeTab === "sent"}
             onClick={() => setActiveTab("sent")}
+          />
+          <CustomTabButton
+            width="w-22 sm:w-32 md:w-46"
+            textSize="text-sm md:text-md"
+            text="Requests"
+            isActive={activeTab === "requests"}
+            onClick={() => setActiveTab("requests")}
+            badgeCount={pendingCount}
           />
         </div>
 
@@ -188,6 +256,65 @@ const ProfilePage = () => {
                   }
                 />
               ))
+            )}
+          </Activity>
+
+          <Activity mode={activeTab === "requests" ? "visible" : "hidden"}>
+            {whisperRequests.length === 0 ? (
+              <p className="text-primaryTextColor font-mulish">
+                No requests yet. Incoming and sent requests will appear here.
+              </p>
+            ) : (
+              <>
+                <p className="text-xs text-secondaryTextColor font-bold font-mulish mb-2 text-left w-full py-2">
+                  INCOMING REQUESTS
+                  {pendingCount > 0 && ` — ${pendingCount} PENDING`}
+                </p>
+
+                {whisperRequests.map((request) => (
+                  <CustomIncomingWhisperRequestCard
+                    key={request.id}
+                    requestId={request.id}
+                    messagePreview={request.messagePreview}
+                    time={request.time}
+                    status={request.status}
+                    onAccept={(id) =>
+                      setWhisperRequests((prev) =>
+                        prev.map((r) =>
+                          r.id === id ? { ...r, status: "accepted" } : r,
+                        ),
+                      )
+                    }
+                    onDecline={(id) =>
+                      setWhisperRequests((prev) =>
+                        prev.map((r) =>
+                          r.id === id ? { ...r, status: "rejected" } : r,
+                        ),
+                      )
+                    }
+                    onOpenChat={(id) => console.log("Open chat", id)}
+                  />
+                ))}
+
+                <div className="w-full h-px bg-borderColor" />
+
+                <p className="text-xs text-secondaryTextColor font-bold font-mulish mb-2 text-left w-full py-2">
+                  SENT REQUESTS
+                </p>
+
+                {sentWhisperRequests.map((request) => (
+                  <CustomSentWhisperRequestCard
+                    key={request.id}
+                    requestId={request.id}
+                    recipientUsername={request.recipientUsername}
+                    recipientImage={request.recipientImage}
+                    messagePreview={request.messagePreview}
+                    time={request.time}
+                    status={request.status}
+                    onOpenChat={(id) => console.log("Open chat", id)}
+                  />
+                ))}
+              </>
             )}
           </Activity>
         </div>
